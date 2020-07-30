@@ -1,4 +1,3 @@
-import os
-import math
+
 
 print(math.pi)
