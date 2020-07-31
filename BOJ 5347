@@ -1,0 +1,25 @@
+#include <iostream>
+#include <queue>
+#include <algorithm>
+using namespace std;
+typedef long long ll;
+ll GCD(ll a, ll b)//유클리드 호제법 ,구현은 쉽지만 활용성이 높습니다.
+{
+	if (a%b == 0)
+		return b;
+	return GCD(b, a%b);
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int test;
+	cin >> test;
+	ll a, b;
+	for (int i = 0; i < test; i++)
+	{
+		cin >> a >> b;
+		ll m = GCD(std::max(a, b), std::min(a, b));
+		cout << m * (a / m)*(b / m) << "\n";
+	}
+}
