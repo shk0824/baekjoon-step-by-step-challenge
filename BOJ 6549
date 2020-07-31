@@ -1,0 +1,73 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <tuple>
+#include <string>
+#include <cmath>
+using namespace std;
+typedef long long ll;
+
+void init(int*tree, deque<int>&height, int node, int start, int end)
+{
+	if (start == end)
+	{
+		tree[node] = start;
+		return;
+	}
+	int mid = (start + end) / 2;
+	init(tree, height, node * 2, start, mid);
+	init(tree, height, node * 2 + 1, mid + 1, end);
+	tree[node] = (height[tree[node * 2]] <= height[tree[node * 2 + 1]]) ? tree[node * 2] : tree[node * 2 + 1];//부모노드를 자식중에 가장 작은 값으로 설정
+
+}
+int query(int*tree, deque<int>&height, int start, int end, int left, int right, int node)
+{
+	if (left > end || start > right)// out of range
+		return -1;
+	int mid = (start + end) / 2;
+	if (left <= start && end <= right) //범위 안에 있으면 모두return해서 cmp
+		return tree[node];
+	
+	int small1 = query(tree, height, start, mid, left, right, node*2);
+	int small2 = query(tree, height, mid + 1,end, left, right, node * 2 + 1);
+	if (small1 == -1 || small2 == -1)
+		return((small1 == -1) ? small2 : small1);
+	return ((height[small1] <= height[small2]) ? small1 : small2);
+	
+}
+ll largest(int*tree, deque<int>&height, int start, int end)
+{
+	int small = query(tree, height, 0, height.size() - 1, start, end, 1);
+	ll area = (ll)height[small] * (ll)(end - start + 1);
+	if (small - 1 >= start)//left side
+	{
+		ll tmpArea = largest(tree, height, start, small - 1);
+		area = std::max(area, tmpArea);
+
+	}
+	if (small + 1 <= end)//right side
+	{
+		ll tmpArea = largest(tree, height, small+1,end);
+		area = std::max(area, tmpArea);
+	}
+	return area;
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n;
+	cin >> n;
+	while (n)
+	{
+		deque<int>height(n);
+		int*tree = new int[4 * n]();
+		for (int i = 0; i < n; i++)
+			cin >> height[i];
+		init(tree, height,1,0,n-1);
+		cout << largest(tree, height, 0, n - 1) << "\n";
+		cin >> n;
+	}
+	
+}
