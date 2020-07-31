@@ -1,0 +1,4 @@
+a,b = input().split()
+
+C = int(a)/int(b)
+print(C)
