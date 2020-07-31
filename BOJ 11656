@@ -1,0 +1,28 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <tuple>
+#include <string>
+using namespace std;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+
+	string s;
+	cin >> s;
+	deque<string>list;
+	string tmp;
+	for (int i = 0; i < s.size(); i++)
+	{
+		tmp = s.substr(i); //i번째 문자 부터 끝까지 
+		list.push_back(tmp);
+
+	}
+	sort(list.begin(), list.end());
+	for (auto& str : list)
+		cout << str << "\n";
+	
+}
