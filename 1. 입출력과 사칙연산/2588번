@@ -12,3 +12,12 @@ def sub(a,b):
 a = int(input())
 b = int(input())
 sub(a,b)
+
+#############################
+
+a = int(input())
+b = input()
+
+for c in reversed(b):
+    print(a * int(c))
+print(a*int(b))
