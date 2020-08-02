@@ -1,0 +1,14 @@
+def sub(a,b):
+    100 <= a < 1000 and 100 <= b <1000
+    one = (b%100)%10
+    ten = (b%100 - one)//10
+    hun = b//100
+    print(a * one)
+    print(a * ten)
+    print(a * hun)
+    print(a * b)
+    return
+
+a = int(input())
+b = int(input())
+sub(a,b)
