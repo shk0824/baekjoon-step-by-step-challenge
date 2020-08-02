@@ -1,0 +1,68 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <tuple>
+#include <string>
+#include <cmath>
+#include <map>
+#include <unordered_map>
+using namespace std;
+typedef long long ll;
+#define MOD 1000000007
+ll init(ll*tree, deque<ll>&number, int node, int start, int end)
+{
+	if (start == end)
+		return tree[node] = number[start];
+	int mid = (start + end) / 2;
+	return tree[node] = (init(tree, number, node * 2, start, mid)*init(tree, number, node * 2 + 1, mid + 1, end)) % MOD;
+
+}
+ll update(ll*tree, int node, int start, int end, int idx,int value)
+{
+	if (end<idx || start>idx)
+		return tree[node];
+	if (start == end)
+		return tree[node] = value;
+	int mid = (start + end) / 2;
+	return tree[node] = (update(tree, node * 2, start, mid, idx, value)*update(tree, node * 2 + 1, mid + 1, end, idx, value)) % MOD;//해당 구간에 포함되는 값을 다시 계산 함.
+}
+ll multi(ll*tree, int node, int start, int end, int left, int right)
+{
+	if (left>end||start>right)
+		return 1;
+
+	if (left <= start && end <= right)
+		return tree[node];
+	int mid = (start + end) / 2;
+	return (multi(tree, node * 2, start, mid, left, right)*multi(tree, node * 2 + 1, mid + 1, end, left, right)) % MOD;//overflow를 생각해서 long long
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n, m, k;
+	cin >> n >> m >> k;
+	deque<ll>number(n);
+	ll*tree = new ll[4 * n]();
+	for (int i = 0; i < n; i++)
+		cin >> number[i];
+	init(tree, number, 1, 0, n - 1);
+	for (int i = 0; i < m + k; i++)
+	{
+		ll a, b, c;
+		cin >> a >> b >> c;
+		if (a == 1)
+		{
+			b -= 1;
+			update(tree, 1, 0, n - 1, b, c);
+			number[b] = c;
+		}
+		else
+		{
+			b -= 1, c -= 1;
+			cout << multi(tree, 1, 0, n - 1, b, c)<<"\n";
+
+		}
+	}
+}
