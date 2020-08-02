@@ -1,0 +1,39 @@
+#include <iostream>
+#include <queue>
+#include <map>
+using namespace std;
+typedef long long ll;
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+
+	int n, m;
+	cin >> n >> m;
+	int*inDirect = new int[n + 1]();
+	deque<int>*list = new deque<int>[n + 1];
+	for (int i = 0; i < m; i++)
+	{
+		int a, b;
+		cin >> a >> b;
+		list[a].push_back(b);
+		inDirect[b]++;
+	}
+
+	queue<int>que;
+	for (int i = 1; i <= n; i++)
+		if (!inDirect[i])
+			que.push(i);
+	while (!que.empty())
+	{
+		int cur = que.front();
+		cout << cur << " ";
+		que.pop();
+		for (auto& edge : list[cur])
+		{
+			if (--inDirect[edge] == 0)
+				que.push(edge);
+		}
+	}
+}
