@@ -1,0 +1,76 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <tuple>
+#include <string>
+#include <cmath>
+#include <map>
+#include <unordered_map>
+#include <list>
+using namespace std;
+typedef long long ll;
+bool cmp(deque<int>&op1, deque<int>&op2)
+{
+	return op1.front() < op2.front();
+}
+void DFS(deque<int>*list, stack<int>&s, int start,bool*visit,int pos,deque<int>&path)
+{
+	visit[start] = true;
+	if (pos != -1)
+		path.push_back(start);
+	for (auto& edge : list[start])
+		if (!visit[edge])
+			DFS(list, s, edge, visit,pos,path);
+
+	s.push(start);
+}
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	
+	int vertex, edge;
+	cin >> vertex >> edge;
+	deque<int>*list = new deque<int>[vertex + 1];
+	deque<int>*reverse = new deque<int>[vertex + 1];
+	deque<int>path;
+	deque<deque<int>>strong;
+	stack<int>visitList;
+	bool*visit = new bool[vertex + 1]();
+	for (int i = 0; i < edge; i++)
+	{
+		int v1, v2;
+		cin >> v1 >> v2;
+		list[v1].push_back(v2);
+		reverse[v2].push_back(v1);
+	}
+	for (int i = 1; i <= vertex; i++)
+		if (!visit[i])
+			DFS(list, visitList, i, visit,-1,path);
+	
+	fill(visit, visit + vertex + 1, false);
+	int pos = 0;
+	while (!visitList.empty())
+	{
+		int cur = visitList.top();
+		visitList.pop();
+		stack<int>st;
+		if (!visit[cur])
+		{
+			DFS(reverse, st, cur, visit, pos++, path);
+			sort(path.begin(), path.end());
+			strong.push_back(path);
+			path.clear();
+		}
+	}
+	sort(strong.begin(), strong.end(), cmp);
+	cout << pos << "\n";
+	for (int i = 0; i < pos; i++)
+	{
+		for (auto& edge : strong[i])
+			cout << edge << " ";
+		cout << -1<< "\n";
+	}
+	
+}
