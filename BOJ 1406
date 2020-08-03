@@ -1,0 +1,56 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <tuple>
+#include <string>
+#include <cmath>
+#include <map>
+#include <unordered_map>
+#include <list>
+using namespace std;
+typedef long long ll;
+
+int main()
+{
+	ios::sync_with_stdio(false);
+	cin.tie(NULL);
+	
+	string s;
+	cin >> s;
+	list<char>List;
+	for (int i = 0; i < s.size(); i++)
+		List.push_back(s[i]);
+	int m;
+	cin >> m;
+	auto iter = List.end();
+	for (int i = 0; i < m; i++)
+	{
+		char op, add;
+		cin >> op;
+		if (op == 'L')
+		{
+			if (iter != List.begin())
+				iter--;
+		}
+		else if (op == 'D')
+		{
+			if (iter != List.end())
+				iter++;
+		}
+		else if (op == 'B')
+		{
+			if (iter != List.begin())
+				iter = List.erase(--iter);
+
+		}
+		else
+		{
+			cin >> add;
+			List.insert(iter,add);
+		}
+	}
+	for (auto& c : List)
+		cout << c;
+
+}
