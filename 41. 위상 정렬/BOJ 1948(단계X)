@@ -1,0 +1,82 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <unordered_map>
+using namespace std;
+int FindPath( int target, int cur,int*dis,deque<pair<int,int>>*rev,int size)
+{
+	queue<int>que;
+	int cnt = 0;
+	que.push(cur);
+	bool*visit = new bool[size]();
+	while (!que.empty())
+	{
+		int cur = que.front();
+		que.pop();
+		for (auto& edge : rev[cur])
+		{
+			if (dis[cur] - dis[edge.second] == edge.first)
+			{
+				cnt++;
+				if (!visit[edge.second])//중복경로X
+				{
+					que.push(edge.second);
+					visit[edge.second] = true;
+				}
+			}
+		}
+	}
+
+	return cnt;
+	
+}
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n, m,start,des,road=0;
+	cin >> n >> m;
+	deque<pair<int,int>>*list = new deque<pair<int, int>>[n + 1]();
+	deque<pair<int, int>>*rev = new deque<pair<int, int>>[n + 1]();
+	int*inDegree = new int[n + 1]();
+	int*dist = new int[n + 1]();
+	for (int i = 0; i < m; i++)
+	{
+		int v1, v2, w;
+		cin >> v1 >> v2 >> w;
+		list[v1].push_back({ w,v2 });
+		rev[v2].push_back({ w,v1 });
+		inDegree[v2]++;
+	}
+	cin >> start >> des;
+	queue<pair<int,int>>que,tmp;
+	que.push({ 0,start });
+
+	while (!que.empty())
+	{
+		int cur = que.front().second;
+		int curTime = que.front().first;
+		que.pop();
+		for (auto& edge : list[cur])
+		{
+			if (dist[edge.second] <=curTime + edge.first)
+				dist[edge.second] = curTime + edge.first;//해당 정점을 거처가는 모든 경로 중 비용이 가장 큰 것을 저장
+			if (--inDegree[edge.second] == 0)
+				tmp.push({ dist[edge.second],edge.second });
+
+		}
+		if (que.empty())
+		{
+			while (!tmp.empty())
+			{
+				que.push(tmp.front());
+				tmp.pop();
+			}
+		}
+		
+	}
+	cout << dist[des] << "\n" << FindPath(start, des, dist, rev, n + 1);
+	
+}
