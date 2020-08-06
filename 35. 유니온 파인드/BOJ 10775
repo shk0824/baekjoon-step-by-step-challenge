@@ -1,0 +1,45 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <unordered_map>
+using namespace std;
+int find(int*parent, int target)
+{
+	if (parent[target] == target)
+		return target;
+	return parent[target] = find(parent, parent[target]);
+
+}
+void Union(int*parent, int x, int y)
+{
+	x = find(parent, x);
+	y = find(parent, y);
+	if (x != y)
+		parent[y] = x;// y가 x보다 항상 크다
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int gate, plane,cnt=0;
+	cin >> gate >> plane;
+	int*parent = new int[gate + 1]();
+	bool det = true;
+	for (int i = 1; i <= gate; i++)
+		parent[i] = i;
+	for (int i = 1; i <=plane; i++)
+	{
+		int g,cur;
+		cin >> g;
+		if (!det)
+			continue;
+		cur = find(parent, g);  //해당 게이트가 가리키는 부모노드로 감
+		if (cur == 0)
+			det = false;
+		else
+			Union(parent, cur-1, g),cnt++;//해당게이트의 부모를 curParent-1로 설정
+		
+	}
+	cout << cnt;
+}
