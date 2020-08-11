@@ -1,0 +1,98 @@
+#include <iostream>
+#include <queue>
+#include <string>
+#include <iomanip>
+#include <math.h>
+using namespace std;
+typedef long long ll;
+ll init(ll*tree, int node, int start, int end, ll*number)
+{
+	if (start == end)
+		return tree[node] = number[start];
+	int mid = (start + end) / 2;
+	return tree[node] = init(tree, node * 2, start, mid, number) + init(tree, node * 2 + 1, mid + 1, end, number);
+}
+void propagate(ll*tree, int node, int start, int end, ll*lazy)
+{
+	if (lazy[node] != 0)
+	{
+		tree[node] += (end - start + 1)*lazy[node];//update기준으로 propagate가 호출 되었을 때를 생각ㅎ 해보면 update호출
+		if (start != end)                          //시점에서의 diff반영 전 기존 lazy에 있는 값을 반영
+		{
+			//현재 구역은 업데이트 했기 때문에 자식 노드들에게 떠넘김
+			lazy[node * 2] += lazy[node];
+			lazy[node * 2 + 1] += lazy[node];
+		}
+		lazy[node] = 0;
+	}
+}
+ll sum(ll*tree,ll*lazy,int node, int start, int end,int left, int right)
+{
+	propagate(tree, node,  start, end, lazy);//합을 구할 때도 propagation수행
+	if (start > right || end<left)
+		return 0;
+	if (left<=start&& end<=right)
+		return tree[node];
+
+	int mid = (start + end) / 2;
+	return sum(tree,lazy, node * 2, start, mid, left, right) + sum(tree,lazy,node * 2 + 1, mid + 1, end, left, right);
+}
+
+void update(ll*tree, ll*lazy, int node, int start, int end, int left, int right,ll&diff)
+{
+	propagate(tree, node, start, end, lazy);
+	if (left > end || right<start)//out of range
+		return;
+	if (left <= start && end <= right)
+	{
+		tree[node] += (end - start + 1)*diff;//구간의 길이만큼 diff를 곱하고 lazy자식에게 전파(현재 lazy[node]에는 기록할필요없음
+		if (start != end)
+		{
+			lazy[node * 2] += diff;
+			lazy[node * 2 + 1] += diff;
+		}
+		return;
+	}
+
+	int mid = (start + end) / 2;
+	update(tree, lazy, node * 2, start, mid, left, right, diff);
+	update(tree, lazy, node * 2+1, mid+1, end, left, right, diff);
+	tree[node] = tree[node * 2] + tree[node * 2 + 1];//위로전파 시키기
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	
+	int n, m, k;
+	cin >> n >> m >> k;
+	ll*number = new ll[n]();
+	ll*tree = new ll[4 * n]();
+	ll*lazy = new ll[4 * n]();
+	for (int i = 0; i < n; i++)
+		cin >> number[i];
+	init(tree, 1, 0, n - 1, number);
+	
+	for (int i = 0; i < m + k; i++)
+	{
+		ll a, b, c, d;
+		cin >> a;
+		if (a == 1)
+		{
+			cin >> b >> c >> d;
+			b -= 1, c -= 1;
+			update(tree, lazy, 1, 0, n - 1, b, c, d);
+
+		}
+		else
+		{
+			cin >> b >> c;
+			b -= 1, c -= 1;
+			cout << sum(tree,lazy,1, 0, n - 1, b, c) << "\n";
+		}
+		
+	}
+	
+	
+	
+}
