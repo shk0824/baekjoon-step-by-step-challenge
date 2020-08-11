@@ -1,0 +1,13 @@
+
+
+import sys
+num=[]
+n=int(sys.stdin.readline()) # input() 보다 sys.stdin.readline()으로 한 줄 씩 읽는게 더 빠름
+count=[0]*10000 # 입력받는 수의 크기의 범위가 10000까지 이기 때문에 각 자릿수가 몇 개 입력되었는지 헤아리기 
+for i in range(n):
+    num=int(sys.stdin.readline())
+    count[num-1]+=1 #각 자릿수를 나타내는 카운트의 갯수 올리기 
+for i in range(10000):
+    while count[i]>0: #만약 카운트 안한 자릿수가 있으면 출력하기. 
+        print(i+1)
+        count[i]-=1 #출력 한다음 숫자 한개 빼기 
