@@ -1,0 +1,43 @@
+#include<iostream>
+#include <queue>
+#include <stack>
+using namespace std;
+
+int main(void)
+{
+	cin.sync_with_stdio(false);
+	cin.tie(0);
+
+	int n,number=1;
+	bool det = true;
+	cin >> n;
+	queue<char>que;
+
+	deque<int>list(n);
+	stack<int>st;
+	st.push(0);// stack이 empty인 경우가 생기지 않게 하기 위해 입력데이터 밖의 값을 넣음
+	for (int i = 0; i < n; i++)
+		cin >> list[i];
+	while (!list.empty())
+	{
+		int cur = list.front(),popValue;//차례대로 나와야 할 숫자 cur
+		list.pop_front();
+
+		while (cur != st.top()&&number<=n)//목표 숫자가 나올 때 까지 stack에 숫자를 추가, 무한루프 방지를 위해 n보다 작거나 같다를 조건으로 줌
+			st.push(number++),que.push('+');
+		
+		popValue = st.top(), st.pop();//while문 탈출 후 topValue와 cur값을 비교
+		if (popValue != cur)//같지 않으면 수열을 만들 수 없음
+		{
+			det = false;
+			break;
+		}
+		que.push('-');
+	}
+
+	if (det)
+		while (!que.empty())
+			cout << que.front() << "\n", que.pop();
+	else
+		cout << "NO";
+}
