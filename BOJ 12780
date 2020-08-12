@@ -1,0 +1,22 @@
+#include <iostream>
+#include <queue>
+#include <string>
+#include <iomanip>
+#include <math.h>
+using namespace std;
+typedef long long ll;
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	
+	string s,ans;
+	cin >> s>>ans;
+	int prev = 0;
+	int cnt = 0;
+	while ((prev = s.find(ans, prev)) != string::npos)
+		cnt++,prev+=ans.size();
+	cout << cnt;
+
+}
