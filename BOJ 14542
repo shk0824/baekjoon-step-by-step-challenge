@@ -1,0 +1,39 @@
+#include<iostream>
+#include <queue>
+#include <stack>
+#include <string>
+#include <map>
+#include <cmath>
+using namespace std;
+
+int main(void)
+{
+	cin.sync_with_stdio(false);
+	cin.tie(NULL);
+	
+	int n, cnt = 1;
+	cin >> n;
+	while (n)
+	{
+		int sum = 0;
+		for (int i = 1; i <= n; i++)
+		{
+			for (int j = 1; j <= i; j++)
+			{
+				int tmp;
+				cin >> tmp;
+				if (i == n)
+					sum += tmp;
+				else
+				{
+					if (j == 1 || j == i)
+						sum += tmp;
+				}
+			}
+		}
+
+		cout << "Case #" << cnt++ << ":" << sum << "\n";
+
+		cin >> n;
+	}
+}

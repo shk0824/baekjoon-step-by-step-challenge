@@ -1,0 +1,97 @@
+//개선 버전
+#include <iostream>
+#include <queue>
+#include <string>
+#include <iomanip>
+#include <math.h>
+using namespace std;
+void devide(int n,  int targetRow, int targetCol, int row, int col,int&cnt)
+{
+	if (n == 2)
+	{
+		for(int i=row;i<row+2;i++)
+			for (int j = col; j < col + 2; j++)
+			{
+				cnt++;
+				if (targetRow == i && targetCol == j)
+				{
+					cout << cnt;
+					exit(0);
+				}
+			}
+	}
+	if (n > 2)
+	{
+		int nextsize = n / 2;
+		int dx[4] = { 0,0,nextsize,nextsize };
+		int dy[4] = { 0,nextsize,0,nextsize };
+		for (int i = 0; i < 4; i++)
+		{
+			int nextRow = row + dx[i], nextCol=col + dy[i];
+			if(targetRow>=nextRow&&targetRow<nextRow+nextsize&&targetCol>=nextCol&&targetCol<nextCol+nextsize)
+				cnt+=nextsize*nextsize*i,devide(nextsize, targetRow, targetCol, nextRow, nextCol, cnt);
+		}
+
+	}
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	
+	int n, r, c;
+	cin >> n >> r >> c;
+	n = pow(2, n);
+	int cnt = -1;
+	devide(n, r, c, 0, 0, cnt);
+}
+
+//개선 전
+#include <iostream>
+#include <queue>
+#include <string>
+#include <iomanip>
+#include <math.h>
+using namespace std;
+void devide(int n,  int targetRow, int targetCol, int row, int col,int&cnt)
+{
+	if (n == 2)
+	{
+		if (targetRow >= row && targetRow < row + 2 && targetCol >= col && targetCol < col + 2)
+		{
+			for (int i = row; i < row + 2; i++)
+				for (int j = col; j < col + 2; j++)
+				{
+
+					if (i == targetRow && j == targetCol)
+					{
+						cout << cnt;
+						exit(0);
+					}
+					cnt++;
+				}
+		}
+		else
+			cnt += 4;
+	}
+	if (n > 2)
+	{
+		int nextsize = n / 2;
+		int dx[4] = { 0,0,nextsize,nextsize };
+		int dy[4] = { 0,nextsize,0,nextsize };
+		for (int i = 0; i < 4; i++)
+			devide(nextsize, targetRow, targetCol, row + dx[i], col + dy[i],cnt);
+
+	}
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	
+	int n, r, c;
+	cin >> n >> r >> c;
+	n = pow(2, n);
+	int cnt = 0;
+	devide(n, r, c, 0, 0, cnt);
+}
