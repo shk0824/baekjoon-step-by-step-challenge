@@ -1,0 +1,30 @@
+from collections import Counter
+import sys
+s=sys.stdin.readline
+List=[]
+counter=0
+num_set=set()
+sum=0
+p=int(s())
+for i in range(p):
+    n=int(s())
+    List+=[n]
+    sum+=n
+    if len(List)==1:
+        maximum=n
+        minimum=n
+    if n>maximum:
+        maximum=n
+    if n<minimum:
+        minimum=n
+
+List.sort()
+fre=Counter(List).most_common(2)
+
+
+print(round(sum/p))
+print(List[p//2])
+if len(fre)!=1 and (fre[0][1]==fre[1][1]):
+    print(fre[1][0])
+else: print (fre[0][0])
+print(maximum-minimum)
