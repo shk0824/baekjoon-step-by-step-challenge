@@ -1,0 +1,205 @@
+// 2단계 개선 버전        성능 별로 4ms -> 150ms -> 300ms
+#include <iostream>
+#include <queue>
+#include <string>
+#include <iomanip>
+#include <math.h>
+#include <algorithm>
+using namespace std;
+typedef long long ll;
+typedef pair<int, pair<int, int>>set;
+#define INF 1000000
+void dijkstra(deque<pair<int, int>>*list,int start,int vertex,int*dist)
+{
+	priority_queue<pair<int, int>, deque<pair<int, int>>, greater<pair<int, int>>>pq;
+	dist[start] = 0;
+	pq.push({ 0,start });
+	while (!pq.empty())
+	{
+		int cur = pq.top().second;
+		int curWeight = pq.top().first;
+		pq.pop();
+		if (dist[cur] < curWeight)
+			continue;
+
+		for (auto& edge : list[cur])
+		{
+			int nextWeight = curWeight + edge.first;
+			if (dist[edge.second] > nextWeight)
+			{
+				dist[edge.second] = nextWeight;
+				pq.push({ nextWeight,edge.second });
+			}
+		}
+	}
+	
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	
+	int vertex, edge, target;
+	cin >> vertex >> edge >> target;
+	deque<pair<int,int>>*list = new deque<pair<int, int>>[vertex + 1]();
+	deque<pair<int, int>>*reverse = new deque<pair<int, int>>[vertex + 1]();
+	for (int i = 0; i < edge; i++)
+	{
+		int from, to, time;
+		cin >> from >> to >> time;
+		list[from].push_back({ time,to });
+		reverse[to].push_back({ time,from });
+	}
+	int *ans = new int[vertex + 1]();
+
+	int *tmpDist = new int[vertex + 1]();
+	fill(tmpDist, tmpDist + vertex + 1, INF);
+	dijkstra(list, target, vertex, tmpDist);//기존 단방향 그래프에서 target-> every Node는 구하는게 가능 하지만 every Node to target은 불가능함 그래서 reverse Graph생성
+	for (int i = 1; i <= vertex; i++)
+		ans[i] += tmpDist[i];
+	fill(tmpDist, tmpDist + vertex + 1, INF);
+	dijkstra(reverse, target, vertex, tmpDist);
+	for (int i = 1; i <= vertex; i++)
+		ans[i] += tmpDist[i];
+
+	sort(ans, ans + vertex + 1);
+	cout << ans[vertex];
+
+	
+	
+}
+
+//1단계 개선
+#include <iostream>
+#include <queue>
+#include <string>
+#include <iomanip>
+#include <math.h>
+#include <algorithm>
+using namespace std;
+typedef long long ll;
+typedef pair<int, pair<int, int>>set;
+#define INF 1000000
+void dijkstra(deque<pair<int, int>>*list,int end, int start,int vertex,int*dist)
+{
+	priority_queue<pair<int, int>, deque<pair<int, int>>, greater<pair<int, int>>>pq;
+	dist[start] = 0;
+	pq.push({ 0,start });
+	while (!pq.empty())
+	{
+		int cur = pq.top().second;
+		int curWeight = pq.top().first;
+		pq.pop();
+		if (dist[cur] < curWeight)
+			continue;
+
+		for (auto& edge : list[cur])
+		{
+			int nextWeight = curWeight + edge.first;
+			if (dist[edge.second] > nextWeight)
+			{
+				dist[edge.second] = nextWeight;
+				pq.push({ nextWeight,edge.second });
+			}
+		}
+	}
+	
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	
+	int vertex, edge, target;
+	cin >> vertex >> edge >> target;
+	deque<pair<int,int>>*list = new deque<pair<int, int>>[vertex + 1]();
+	for (int i = 0; i < edge; i++)
+	{
+		int from, to, time;
+		cin >> from >> to >> time;
+		list[from].push_back({ time,to });
+	}
+	
+	int *dist = new int[vertex + 1]();
+	fill(dist, dist + vertex + 1, INF);
+	dijkstra(list, 5, target, vertex, dist);
+
+	
+	for (int i = 1; i <= vertex; i++)
+	{
+		int *tmpDist = new int[vertex + 1]();
+		fill(tmpDist, tmpDist + vertex + 1,INF);
+		if (i != target)
+			dijkstra(list, target, i, vertex, tmpDist), dist[i] += tmpDist[target];
+	}
+	
+	sort(dist, dist + vertex + 1);
+	cout << dist[vertex-1];
+	
+}
+
+// 최악의 코드
+#include <iostream>
+#include <queue>
+#include <string>
+#include <iomanip>
+#include <math.h>
+#include <algorithm>
+using namespace std;
+typedef long long ll;
+typedef pair<int, pair<int, int>>set;
+#define INF 1000000
+int dijkstra(deque<pair<int, int>>*list,int end, int start,int vertex)
+{
+	int*dist = new int[vertex + 1]();
+	fill(dist, dist + vertex + 1, INF);
+	priority_queue<pair<int, int>, deque<pair<int, int>>, greater<pair<int, int>>>pq;
+	dist[start] = 0;
+	pq.push({ 0,start });
+	while (!pq.empty())
+	{
+		int cur = pq.top().second;
+		int curWeight = pq.top().first;
+		pq.pop();
+		if (dist[cur] < curWeight)
+			continue;
+
+		for (auto& edge : list[cur])
+		{
+			int nextWeight = curWeight + edge.first;
+			if (dist[edge.second] > nextWeight)
+			{
+				dist[edge.second] = nextWeight;
+				pq.push({ nextWeight,edge.second });
+			}
+		}
+	}
+	return dist[end];
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	
+	int vertex, edge, target;
+	cin >> vertex >> edge >> target;
+	deque<pair<int,int>>*list = new deque<pair<int, int>>[vertex + 1]();
+	for (int i = 0; i < edge; i++)
+	{
+		int from, to, time;
+		cin >> from >> to >> time;
+		list[from].push_back({ time,to });
+	}
+	int maxDist = 0;
+	for (int i = 1; i <= vertex; i++)
+	{
+		int curWeight = 0;
+		if (i != target)
+		{
+			curWeight += dijkstra(list, target, i, vertex);
+			curWeight += dijkstra(list, i, target, vertex);
+			maxDist = std::max(curWeight, maxDist);
+		}
+	}
+	cout << maxDist;
+}
