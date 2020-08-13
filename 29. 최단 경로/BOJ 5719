@@ -1,0 +1,101 @@
+#include <iostream>
+#include <queue>
+#include <string>
+#include <iomanip>
+#include <math.h>
+#include <algorithm>
+using namespace std;
+typedef long long ll;
+#define INF 20000000         // weightMax=10^3 ,edge Max=10^4  최악의 경우 10^3 * 10^4 = 10^7 넉넉 잡아서 2배해줌
+typedef pair<int, int>set;
+void erase(int start, int des, int**map,int*dist,int vertex)
+{
+	if (start == des)
+		return;
+	for (int i = 0; i < vertex; i++)
+	{
+		if (map[i][des] && dist[des] - dist[i] == map[i][des])//경로가 겹치는 것이 있을 수도 있기 떄문에 Path배열에 의존하지 않고 하나하나 다 확인 해 봄.
+		{
+			map[i][des] = 0;
+			erase(start, i, map, dist, vertex);
+		}
+	}
+	
+
+}
+void dijkstra(int**map, int start, int*dist, int*path,int vertex)
+{
+	priority_queue<set, deque<set>, greater<set>>pq;
+	dist[start] = 0;
+	pq.push({ 0,start });
+	while (!pq.empty())
+	{
+		int cur = pq.top().second;
+		int curWeight = pq.top().first;
+		pq.pop();
+		if (dist[cur] < curWeight)
+			continue;
+
+		for(int j=0;j<vertex;j++)
+			if (map[cur][j])
+			{
+				int nextWeight = curWeight + map[cur][j];
+				if (dist[j] > nextWeight)
+				{
+					dist[j] = nextWeight;
+					pq.push({ nextWeight,j });
+					path[j] = cur;
+				}
+			}
+	}
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	
+	int vertex, edge;
+	cin >> vertex >> edge;
+	while (vertex != 0 || edge != 0)
+	{
+		int start, end;
+		cin >> start >> end;
+		int**map = new int*[vertex];
+		for (int i = 0; i < vertex; i++)
+			map[i] = new int[vertex]();
+		for (int i = 0; i < edge; i++)
+		{
+			int from, to, weight;
+			cin >> from >> to >> weight;
+			map[from][to] = weight;
+
+		}
+		int*dist = new int[vertex];
+		int*path = new int[vertex]();
+		fill(dist, dist + vertex, INF);
+		dijkstra(map, start, dist, path, vertex);
+		
+		if (dist[end] == INF)
+			cout << -1;
+		else
+		{
+			int minDist = dist[end];
+			while (minDist == dist[end])
+			{
+				erase(start, end, map, dist, vertex);
+				fill(dist, dist + vertex, INF);
+				dijkstra(map, start, dist, path, vertex);
+			}
+			
+			if (dist[end] == INF)
+				cout << -1;
+			else
+				cout << dist[end];
+
+		}
+
+		cout << "\n";
+		
+		cin >> vertex >> edge;
+	}
+}
