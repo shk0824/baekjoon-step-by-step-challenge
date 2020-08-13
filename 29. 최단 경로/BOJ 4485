@@ -1,0 +1,69 @@
+#include <iostream>
+#include <queue>
+#include <string>
+#include <iomanip>
+#include <math.h>
+#include <algorithm>
+using namespace std;
+typedef long long ll;
+typedef pair<int, pair<int, int>>set;
+#define INF 2000
+void dijkstra(int**map, int n, int**copy)
+{
+	priority_queue<set, deque<set>, greater<set>>pq;
+	copy[0][0] = map[0][0];
+	pq.push({ copy[0][0],{0,0} });
+	int dx[4] = { -1,1,0,0 };
+	int dy[4] = { 0,0,-1,1 };
+	while (!pq.empty())
+	{
+		set p = pq.top();
+		int curWeight = p.first, curRow = p.second.first, curCol = p.second.second;
+		pq.pop();
+		if (copy[curRow][curCol] < curWeight)
+			continue;
+
+		for (int i = 0; i < 4; i++)
+		{
+			int nextRow = curRow + dx[i], nextCol = curCol + dy[i];
+			if (nextRow >= 0 && nextRow < n&&nextCol >= 0 && nextCol < n)
+			{
+				int nextWeight = curWeight + map[nextRow][nextCol];
+				if (copy[nextRow][nextCol] > nextWeight)
+				{
+					copy[nextRow][nextCol] = nextWeight;
+					pq.push({ nextWeight,{nextRow,nextCol} });
+				}
+			}
+
+		}
+	}
+
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	
+	int n,cnt=1;
+	cin >> n;
+	while (n)
+	{
+		int**map = new int*[n];
+		int**copy = new int*[n];
+		
+		for (int i = 0; i < n; i++)
+			map[i] = new int[n](),copy[i]=new int[n]();
+
+		for (int i = 0; i < n; i++)
+			for (int j = 0; j < n; j++)
+				cin >> map[i][j], copy[i][j] = INF;
+
+
+		dijkstra(map, n, copy);
+		cout <<"Problem "<<cnt++<<": "<<copy[n - 1][n - 1] << "\n";
+		cin >> n;
+	}
+
+
+}
