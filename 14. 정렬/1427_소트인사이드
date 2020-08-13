@@ -1,0 +1,6 @@
+for i in sorted(list(input()),reverse=True): #각 글자를 리스트로 받아서 내림차순 정렬
+    print(i, end="")
+
+
+
+print(*sorted(list(input())[::-1], sep="") #이렇게 숏코딩 가능, sorted 앞 *(에스테릭 기호)가 리스트 끝에서부터 하나 하나씩 빼서 print 안에 집어 넣고, sep=""는 각 각의 원소를 띄우지 않고 프린트하라는 뜻
