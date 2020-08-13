@@ -1,0 +1,38 @@
+#include <iostream>
+#include <queue>
+#include <string>
+#include <iomanip>
+#include <math.h>
+#include <algorithm>
+using namespace std;
+typedef long long ll;
+typedef pair<int, pair<int, int>>set;
+#define INF 2000000
+int makeNum(int n)
+{
+	int ans = 0;
+	while (n / 10 != 0)
+		ans += (int)pow(n % 10, 2), n /= 10;
+	ans += (int)pow(n, 2);
+	return ans;
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	bool visit[81 * 9 + 1] = { 0 };
+	string s;
+	cin >> s;
+	int num = 0;
+	for (int i = 0; i < s.size(); i++)
+		num += (int)pow(s[i] - '0', 2);
+	while (num != 1 && !visit[num])
+	{
+		visit[num] = true;
+		num = makeNum(num);
+	}
+	if (num == 1)
+		cout << "HAPPY";
+	else
+		cout << "UNHAPPY";
+}
