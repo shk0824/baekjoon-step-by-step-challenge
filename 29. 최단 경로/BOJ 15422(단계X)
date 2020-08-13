@@ -1,0 +1,71 @@
+//제한시간이 2초이고 통과시간은 136ms 이지만 개선의 여지가 많은 코드
+#include <iostream>
+#include <queue>
+#include <string>
+#include <iomanip>
+#include <math.h>
+#include <algorithm>
+using namespace std;
+typedef long long ll;
+#define INF 7500000000// 간선 당 최대비용 50000 , 최대 간선 150000 (정점개수 X 최대비용 해도 무방)
+typedef pair<ll, int>set;
+void dijkstra(deque<set>*list, int start, ll*dist)
+{
+	dist[start] = 0;
+	priority_queue<set, deque<set>, greater<set>>pq;
+	pq.push({ 0,start });
+	while (!pq.empty())
+	{
+		int cur = pq.top().second;
+		ll curWeight = pq.top().first;
+		pq.pop();
+		if (dist[cur] < curWeight)
+			continue;
+
+		for (auto& edge : list[cur])
+		{
+			int next = edge.second;
+			ll nextWeight = edge.first + curWeight;
+			if (dist[next] > nextWeight)
+			{
+				dist[next] = nextWeight;
+				pq.push({ nextWeight,next });
+
+			}
+		}
+	}
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int vertex, road, flight, start, des;
+	cin >> vertex >> road >> flight >> start >> des;
+	deque<set>*list = new deque<set>[vertex];
+	
+	for (int i = 0; i < road; i++)
+	{
+		int from, to, weight;
+		cin >> from >> to >> weight;
+		list[from].push_back({ weight,to });
+		list[to].push_back({ weight,from });
+	}
+
+	ll*dist = new ll[vertex];
+	fill(dist, dist + vertex, INF);
+	dijkstra(list, start, dist);
+
+	ll minValue = dist[des];
+	for (int i = 0; i < flight; i++)
+	{
+		int from, to;
+		cin >> from >> to;
+		fill(dist, dist + vertex, INF);
+		list[from].push_back({ 0,to });   //비행기를 많아도 하나만 타기 때문에 한번도 안탓을 때 비용과 하나만 탔을 때 비용을 다 타보면서 비교
+		dijkstra(list, start, dist);
+		minValue = std::min(minValue, dist[des]);
+		list[from].pop_back();
+	}
+
+	cout << minValue;
+}
