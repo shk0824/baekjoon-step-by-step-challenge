@@ -1,0 +1,78 @@
+#include <iostream>
+#include <queue>
+#include <string>
+#include <iomanip>
+#include <math.h>
+#include <algorithm>
+using namespace std;
+
+using ll = long long;
+using set = pair<ll, int>;
+using Info = pair<ll, pair<int, int>>;
+#define INF 10000000000
+
+void dijkstra(deque<set>*list, ll**dist, int start, int limit)
+{
+	for (int i = 0; i <= limit; i++)
+		dist[start][i] = 0;
+	priority_queue<Info, deque<Info>, greater<Info>>pq;
+	pq.push({ 0,{start,0} });
+	while (!pq.empty())
+	{
+		Info cur = pq.top();
+		pq.pop();
+
+		if (dist[cur.second.first][cur.second.second] < cur.first)
+			continue;
+
+		for (auto& edge : list[cur.second.first])
+		{
+			Info next = { edge.first + cur.first,{edge.second,cur.second.second} };
+			if (edge.first == 0)
+				next.second.second++;
+			if (next.second.second > limit)
+				continue;
+
+			if (dist[next.second.first][next.second.second]> next.first)
+			{
+				dist[next.second.first][next.second.second] = next.first;
+				pq.push(next);
+			}
+		}
+	
+	}
+	
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	
+	int vertex, edge, lap;
+	cin >> vertex >> edge >> lap;
+
+	deque<set>*list = new deque<set>[vertex + 1];
+	for (int i = 0; i < edge; i++)
+	{
+		int from, to, weight;
+		cin >> from >> to >> weight;
+		list[from].push_back({ weight,to });
+		list[from].push_back({ 0,to });
+		list[to].push_back({ weight,from });
+		list[to].push_back({ 0,from });
+	}
+	ll**dist = new ll*[vertex + 1]();
+	for (int i = 1; i <= vertex; i++)//
+	{
+		dist[i] = new ll[lap + 1]();
+		for (int j = 0; j < lap + 1; j++)
+			dist[i][j] = INF;
+	}
+
+	dijkstra(list, dist, 1, lap);
+	ll minDist = INF;
+	for (int i = 0; i < lap + 1; i++)
+		minDist = std::min(minDist, dist[vertex][i]);
+	cout << minDist;
+
+}
