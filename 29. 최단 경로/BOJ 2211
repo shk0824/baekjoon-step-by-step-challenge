@@ -1,0 +1,87 @@
+#include <iostream>
+#include <queue>
+#include <string>
+#include <iomanip>
+#include <math.h>
+#include <algorithm>
+using namespace std;
+#define INF 10000
+using set = pair<int, int>;
+void dijkstra(deque<set>*list, int start, int*path, int*dist)
+{
+	dist[start] = 0;
+	priority_queue < set, deque<set>, greater<set>>pq;
+	pq.push({ 0,start });
+	while (!pq.empty())
+	{
+		int cur = pq.top().second;
+		int curTime = pq.top().first;
+		pq.pop();
+
+		if (dist[cur] < curTime)
+			continue;
+
+		for (auto& edge : list[cur])
+		{
+			int next = edge.second;
+			int nextTime = edge.first + curTime;
+			if (dist[next] > nextTime)
+			{
+				dist[next] = nextTime;
+				pq.push({ nextTime,next });
+				path[edge.second] = cur;
+			}
+		}
+	}
+}
+int find(int*parent, int target)
+{
+	if (target == parent[target])
+		return target;
+	return parent[target] = find(parent, parent[target]);
+}
+void Union(int*parent, int x, int y)
+{
+	x = find(parent, x);
+	y = find(parent, y);
+	if (x != y)
+		parent[x] = y;
+
+}
+void Tracing(int*path, int start, int des,deque<set>&connected,int*parent)//다익스트라를 통해 찾은 경로 중 이미 연결 되어있으면 연결 하지 않음
+{
+	if (des == start)
+		return;
+	if (find(parent, des) != find(parent, path[des]))
+		Union(parent, des, path[des]), connected.push_back({ des,path[des] });
+	Tracing(path, start, path[des], connected, parent);
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int vertex, edge;
+	cin >> vertex >> edge;
+	deque<set>*list = new deque<set>[vertex + 1]();
+	for (int i = 0; i < edge; i++)
+	{
+		int from, to, weight;
+		cin >> from >> to >> weight;
+		list[from].push_back({ weight,to });
+		list[to].push_back({ weight,from });
+	}
+	int*dist = new int[vertex + 1];
+	int*path = new int[vertex + 1]();
+	int*parent = new int[vertex + 1]();
+	for (int i = 1; i <= vertex; i++)
+		parent[i] = i;
+	fill(dist, dist + vertex + 1, INF);
+	dijkstra(list, 1, path, dist);
+
+	deque<set>ans;
+	for (int i = 2; i <= vertex; i++)
+		Tracing(path, 1, i, ans, parent);
+	cout << ans.size() << "\n";
+	for (auto& e : ans)
+		cout << e.first << " " << e.second << "\n";
+}
