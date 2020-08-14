@@ -1,0 +1,13 @@
+N = int(input())
+M = N
+while M % 2 == 0:
+    print(2)
+    M = M/2
+    if M % 2 != 0:
+        break
+for n in range(3, N+1, 2):
+    while M % n == 0:
+        print(n)
+        M = M/n
+    if M == 1:
+        break
