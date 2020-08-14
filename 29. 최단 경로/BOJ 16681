@@ -1,0 +1,82 @@
+#include <iostream>
+#include <queue>
+#include <string>
+#include <iomanip>
+#include <math.h>
+#include <algorithm>
+using namespace std;
+#define INF 1000000000000
+using ll = long long;
+using set = pair <ll, int>;
+using Info = pair <ll, pair<int, int>>;
+void acsendingDijkstra(deque<set>*list, int start, ll*dist, ll*height)
+{
+	dist[start] = 0;
+	priority_queue<Info, deque<Info>, greater<Info>>pq;
+	pq.push({ 0,{start,1} });
+	while (!pq.empty())
+	{
+		Info cur = pq.top();
+		pq.pop();
+		if (dist[cur.second.first] < cur.first)
+			continue;
+		ll curWeight = cur.first;
+		int curNode = cur.second.first;
+		int curHegiht = cur.second.second;
+
+		for (auto& edge : list[curNode])
+		{
+			if (height[edge.second] - curHegiht <= 0)//높이 차 가 음 수 이면 continue
+				continue;
+			int nextHeight = height[edge.second], nextNode = edge.second;
+			ll nextWeight = curWeight + edge.first;
+			if (dist[nextNode] > nextWeight)
+			{
+				dist[nextNode] = nextWeight;
+				pq.push({ nextWeight,{nextNode,nextHeight} });
+			}
+		}
+	}
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+
+	int vertex, edge, consumHP;
+	ll earn;
+	cin >> vertex >> edge >> consumHP >> earn;
+
+	ll*height = new ll[vertex + 1]();
+	for (int i = 1; i <= vertex; i++)
+		cin >> height[i];
+
+	deque<set>*list = new deque<set>[vertex + 1]();
+
+	for (int i = 0; i < edge; i++)
+	{
+		int from, to, weight;
+		cin >> from >> to >> weight;
+		list[from].push_back({ weight,to });
+		list[to].push_back({ weight,from });
+	}
+	ll* acDist = new ll[vertex + 1]();
+	ll*dcDist = new ll[vertex + 1]();
+	fill(acDist, acDist + vertex + 1, INF), fill(dcDist, dcDist + vertex + 1, INF);
+
+	acsendingDijkstra(list, 1, acDist, height);//집에서 등산하는 경로
+	acsendingDijkstra(list, vertex, dcDist, height);//대학교에서 등산하는 경로
+
+	ll maxAns = -INF;
+	for (int i = 2; i < vertex; i++)
+	{
+		if (acDist[i] == INF || dcDist[i] == INF)//집 or 대학교에서 갈 수 없는경우는 제외
+			continue;
+		maxAns = std::max(maxAns, height[i] * earn - (acDist[i] + dcDist[i])*consumHP);
+	}
+
+	if (maxAns == -INF)
+		cout << "Impossible";
+	else
+		cout << maxAns;
+}
