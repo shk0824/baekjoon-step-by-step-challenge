@@ -1,4 +1,4 @@
 A, B, C = map(int, input().split())
 a = list((A, B, C))
 a.sort()
-a.pop(1)
+print(a.pop(1))
