@@ -1,0 +1,99 @@
+#include<iostream>
+#include<deque>
+#include<vector>
+#include<queue>
+#include<algorithm>
+#include<cmath>
+#include<list>
+#include<stack>
+#include <string>
+#include <map>
+#include <bitset>
+using namespace std;
+using path = pair<int, pair<int, int>>;
+bool isp(int row, int col, int Srow, int Scol)//is possible ->가능한 경로인지 ex)out of range
+{
+	if (row >= 0 && row < Srow&&col >= 0 && col < Scol)
+		return true;
+	return false;
+}
+int BFS(int**map, pair<int, int>start,int limit,bool***visit,pair<int,int>des,int row,int col)//움직인 횟수를 기록하기 위해 DP(visit array)
+{
+	queue<path>que, tmp;
+	que.push({ 0,start });
+	visit[0][0][0] = true;
+	int adjMovedx[4] = { -1,1,0,0 };
+	int adjMovedy[4] = { 0,0,-1,1 };
+	int knightMovedx[8] = { -2,-1,1,2,2,1,-1,-2 };
+	int knightMovedy[8] = { 1,2,2,1,-1,-2,-2,-1 };
+	int totalMove = 0;
+	while (!que.empty())
+	{
+		int curRow = que.front().second.first;
+		int curCol = que.front().second.second;
+		int curMove = que.front().first;
+		if (des.first == curRow && des.second == curCol)
+			return totalMove;
+
+		que.pop();
+		if (curMove < limit)//이동제한이 없을 때는 kinght처럼 움직이는 것도 포함한다
+		{
+			for (int i = 0; i < 8; i++)
+			{
+				int nextRow = curRow + knightMovedx[i];
+				int nextCol = curCol + knightMovedy[i];
+				int nextMove = curMove + 1;
+				if (isp(nextRow, nextCol, row, col) && !visit[nextRow][nextCol][nextMove]&&map[nextRow][nextCol]!=1)
+					tmp.push({ nextMove,{nextRow,nextCol} }), visit[nextRow][nextCol][nextMove] = true;
+
+			}
+		}
+		for (int i = 0; i < 4; i++)//인접한 곳으로 이동하는 경우
+		{
+			int nextRow = curRow + adjMovedx[i], nextCol = curCol + adjMovedy[i];
+			int nextMove = curMove;
+			if (isp(nextRow, nextCol, row, col) && !visit[nextRow][nextCol][nextMove]&& map[nextRow][nextCol] != 1)
+				tmp.push({ nextMove,{nextRow,nextCol} }), visit[nextRow][nextCol][nextMove] = true;
+		}
+
+		if (que.empty())
+		{
+			totalMove++;
+			while (!tmp.empty())
+			{
+				que.push(tmp.front());
+				tmp.pop();
+			}
+		}
+	}
+	return -1;//도착할수없는경우
+}
+int main(void)
+{
+	cin.sync_with_stdio(false);
+	cin.tie(0);
+	
+	int k;
+	int col, row;
+	cin >>k>>col >> row;
+	int**map = new int*[row];
+	bool***visit = new bool**[row];
+	for (int i = 0; i < row; i++)
+	{
+		map[i] = new int[col]();
+		visit[i] = new bool*[col];
+		for (int j = 0; j < col; j++)
+			visit[i][j] = new bool[k + 1]();
+	}
+
+	for (int i = 0; i < row; i++)
+		for (int j = 0; j < col; j++)
+			cin >> map[i][j];
+
+	pair<int, int>start = { 0,0 };
+	pair<int, int>des = { row - 1,col - 1 };
+	cout << BFS(map, start, k, visit, des, row, col);
+
+
+	
+}
