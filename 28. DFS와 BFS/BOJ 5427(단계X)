@@ -1,0 +1,112 @@
+#include <stdio.h>
+#include <algorithm>
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <queue>
+using namespace std;
+using set = pair<int, pair<int, int>>;
+#define INF 100000000
+bool isp(int row, int col, int Srow, int Scol)
+{
+	if (row >= 0 && row < Srow&&col >= 0 && col < Scol)
+		return true;
+	return false;
+}
+void BFS(char**map, int**dist, queue<set>&que,int Srow,int Scol)
+{
+	int dx[4] = { -1,1,0,0 };
+	int dy[4] = { 0,0,-1,1 };
+	while (!que.empty())
+	{
+		set cur = que.front();
+		int curRow = cur.second.first, curCol = cur.second.second;
+		int curDist = cur.first;
+		que.pop();
+		if (dist[curRow][curCol] < curDist)
+			continue;
+
+		for (int i = 0; i < 4; i++)
+		{
+			int nextRow = curRow + dx[i], nextCol = curCol + dy[i];
+			int nextDist = curDist + 1;
+			if (isp(nextRow, nextCol, Srow, Scol) && map[nextRow][nextCol] != '*'&&map[nextRow][nextCol] != '#'&&dist[nextRow][nextCol] > nextDist)
+			{
+				que.push({ nextDist,{nextRow,nextCol} });
+				dist[nextRow][nextCol] = nextDist;
+			}
+		}
+
+
+	}
+}
+int NomalBFS(char**map, int**dist, pair<int, int>start, int Srow, int Scol)
+{
+	int dx[4] = { -1,1,0,0 };
+	int dy[4] = { 0,0,-1,1 };
+	queue<set>que;
+	que.push({ 0,start });
+	dist[start.first][start.second] = true;
+	while (!que.empty())
+	{
+		set cur = que.front();
+		int curRow = cur.second.first, curCol = cur.second.second;
+		int curdist = cur.first;
+		que.pop();
+		if (curRow == 0 || curRow == Srow - 1 || curCol == 0 || curCol == Scol - 1)
+			return curdist + 1;
+		if (dist[curRow][curCol] < curdist)
+			continue;
+
+		for (int i = 0; i < 4; i++)
+		{
+			int nextRow = curRow + dx[i], nextCol = curCol + dy[i];
+			int nextDist = curdist + 1;
+			if (isp(nextRow, nextCol, Srow, Scol) && map[nextRow][nextCol] != '*'&&map[nextRow][nextCol] != '#'&&dist[nextRow][nextCol] > nextDist)
+			{
+				dist[nextRow][nextCol] = nextDist;
+				que.push({ nextDist,{nextRow,nextCol} });
+			}
+		}
+	}
+	return -1;
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int test;
+	cin >> test;
+	while (test--)
+	{
+		int col, row;
+		pair<int, int>start;
+		cin >> col >> row;
+		char**map = new char*[row];
+		int**visit = new int*[row];
+		
+		queue<set>list;
+		for (int i = 0; i < row; i++)
+		{
+			map[i] = new char[col](), visit[i] = new int[col]();
+			for (int j = 0; j < col; j++)
+				visit[i][j] = INF;
+		}
+		for (int i = 0; i < row; i++)
+			for (int j = 0; j < col; j++)
+			{
+				cin >> map[i][j];
+				if (map[i][j] == '@')
+					start.first = i, start.second = j;
+				else if (map[i][j] == '*')
+					list.push({ 0,{i,j} });
+			}
+		BFS(map, visit, list, row, col);
+		int ans = NomalBFS(map, visit, start, row, col);
+		if (ans == -1)
+			cout << "IMPOSSIBLE";
+		else
+			cout << ans;
+		cout << "\n";
+	}
+}
