@@ -1,0 +1,71 @@
+#include<iostream>
+#include<queue>
+#include <algorithm>
+#include <stack>
+#include <iomanip>
+#include <cmath>
+using namespace std;
+using set = pair<pair<int, int>, pair<int, int>>;// first group은 start와의 차이,second group은 좌표
+using ll = long long;
+bool cmp(set&op1, set&op2)
+{
+	if (1LL * op1.first.second*op2.first.first != 1LL * op1.first.first*op2.first.second)
+		return 1LL * op1.first.second*op2.first.first < 1LL * op1.first.first*op2.first.second;
+	if (op1.second.second != op2.second.second)
+		return op1.second.second < op2.second.second;
+
+	return op1.second.first < op2.second.first;
+}
+ll ccw(set&a, set&b, set&c)
+{
+	return 1LL * ((b.second.first - a.second.first)*(c.second.second - a.second.second) - (b.second.second - a.second.second)*(c.second.first - a.second.first));
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+
+	deque<set>list;
+	int n;
+	cin >> n;
+	for (int i = 0; i < n; i++)
+	{
+		int x, y;
+		cin >> x >> y;
+		list.push_back({ { 0,0 }, { x,y } });
+	}
+	sort(list.begin(), list.end(), cmp);
+
+	for (int i = 1; i < list.size(); i++)
+	{
+		list[i].first.first = list[i].second.first - list[0].second.first;
+		list[i].first.second = list[i].second.second - list[0].second.second;
+	}
+	sort(list.begin() + 1, list.end(), cmp);
+	int next = 2;
+	deque<int>que;
+	que.push_back(0), que.push_back(1);
+	while (next < n)
+	{
+		while (que.size() >= 2)
+		{
+			int first, second;
+			second = que.back(), que.pop_back();
+			first = que.back();
+			if (ccw(list[first], list[second], list[next]) > 0)
+			{
+				que.push_back(second);
+				break;
+			}
+		}
+		que.push_back(next++);
+	}
+
+	cout << fixed;
+	cout.precision(10);
+	double maxDist = 0;
+	for (int i = 0; i < que.size() - 1; i++)
+		for (int j = i + 1; j < que.size(); j++)
+			maxDist = std::max(maxDist, sqrt(pow(list[que[i]].second.first - list[que[j]].second.first, 2) + pow(list[que[i]].second.second - list[que[j]].second.second, 2)));
+	cout << maxDist;
+}
