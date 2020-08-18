@@ -1,0 +1,87 @@
+#include<iostream>
+#include<queue>
+#include <algorithm>
+#include <stack>
+#include <iomanip>
+#include <cmath>
+using namespace std;
+using ll = long long;
+using set = pair<pair<ll,ll>, pair<ll,ll>>;// first group은 start와의 차이,second group은 좌표
+
+#define PI 3.1415926535
+bool cmp(set&op1, set&op2)
+{
+	if (op1.first.second*op2.first.first != op1.first.first*op2.first.second)
+		return op1.first.second*op2.first.first < op1.first.first*op2.first.second;
+	if (op1.second.second != op2.second.second)
+		return op1.second.second < op2.second.second;
+	return op1.second.first < op2.second.first;
+}
+int ccw(set&a, set&b, set&c)
+{
+	return (b.second.first - a.second.first)*(c.second.second - a.second.second)-(b.second.second-a.second.second)*(c.second.first-a.second.first);
+}
+ll innerproduct(pair<ll, ll>a, pair<ll, ll>b)
+{
+	return a.first*b.first + a.second*b.second;
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	
+	int vertex, dist;
+	cin >> vertex >> dist;
+	deque<set>list;
+	for (int i = 0; i < vertex; i++)
+	{
+		ll x, y;
+		cin >> x >> y;
+		list.push_back({ {0,0},{x,y} });
+	}
+	sort(list.begin(), list.end(), cmp);
+
+	for (int i = 1; i <vertex; i++)
+	{
+		list[i].first.first = list[i].second.first - list[0].second.first;
+		list[i].first.second = list[i].second.second - list[0].second.second;
+	}
+	sort(list.begin() + 1, list.end(), cmp);
+
+	deque<int>st;
+	st.push_back(0), st.push_back(1);
+	int next = 2;
+	while (next < vertex)
+	{
+		while (st.size() >= 2)
+		{
+			int second, first;
+			second = st.back(), st.pop_back();
+			first = st.back();
+			if (ccw(list[first], list[second], list[next]) > 0)
+			{
+				st.push_back(second);
+				break;
+			}
+
+		}
+		st.push_back(next++);
+
+	}
+	double ans = 0;
+	int size = st.size();
+	for (int i = 0; i < size; i++)
+	{
+		set left = list[st[(i + size - 1) % size]], cur = list[st[i]], right = list[st[(i + 1) % size]];
+		double rightDist = sqrt(pow(cur.second.first - right.second.first, 2) + pow(cur.second.second - right.second.second, 2));
+		ans += rightDist;
+		double leftDist= sqrt(pow(cur.second.first - left.second.first, 2) + pow(cur.second.second - left.second.second, 2));
+
+		ll inner = innerproduct({ left.second.first - cur.second.first,left.second.second - cur.second.second }, { right.second.first - cur.second.first,right.second.second - cur.second.second });
+		double theta =acos((double)inner / rightDist / leftDist);
+		theta = PI - theta;
+		ans += dist * theta;
+	}
+	cout << (ll)round(ans);
+}
+
