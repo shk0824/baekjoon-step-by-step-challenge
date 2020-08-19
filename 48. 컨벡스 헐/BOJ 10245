@@ -1,0 +1,109 @@
+#include<iostream>
+#include<queue>
+#include <algorithm>
+#include <stack>
+#include <iomanip>
+#include <cmath>
+#include <map>
+#include <string>
+using namespace std;
+using ll = long long;
+using set = pair<pair<ll, ll>, pair<ll, ll>>;
+bool cmp(set&op1, set&op2)
+{
+	if (op1.first.second*op2.first.first != op1.first.first*op2.first.second)
+		return op1.first.second*op2.first.first < op1.first.first*op2.first.second;
+	if (op1.second.second != op2.second.second)
+		return op1.second.second < op2.second.second;
+	return op1.second.first < op2.second.first;
+}
+ll ccw(set&fir, set&sec, set&next)
+{
+	return ((sec.second.first - fir.second.first)*(next.second.second - fir.second.second) - (next.second.first - fir.second.first)*(sec.second.second - fir.second.second));
+}
+ll cccw(set a, set b, set c, set d)
+{
+	d.second.first -= (c.second.first - b.second.first); // ab백터와 cd벡터가 떨어져 있을 때 d좌표를 ab벡터와 cd벡터가 붙어있을 때 처럼 여기고 좌표를 c와b의 차이만큼 빼서 ab벡터와 ad벡터의 외적을   
+	d.second.second -= (c.second.second - b.second.second);
+	return ccw(a, b, d);
+}
+ll dist(set&op1, set&op2)
+{
+	ll tmp=(pow(op2.second.first - op1.second.first, 2) + pow(op2.second.second - op1.second.second, 2));
+	return tmp;
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	
+	int test;
+	cin >> test;
+	while (test--)
+	{
+		int vertex;
+		cin >> vertex;
+		deque<set>list;
+		for (int i = 0; i < vertex; i++)
+		{
+			int x, y;
+			cin >> x >> y;
+			list.push_back({ {0,0},{x,y} });
+		}
+		sort(list.begin(), list.end(), cmp);
+
+		for (int i = 1; i < vertex; i++)
+		{
+			list[i].first.first = list[i].second.first - list[0].second.first;
+			list[i].first.second = list[i].second.second - list[0].second.second;
+		}
+		sort(list.begin() + 1, list.end(), cmp);
+
+		deque<int>st;
+		st.push_back(0), st.push_back(1);
+		int next = 2;
+		while (next < vertex)
+		{
+			while (st.size() >= 2)
+			{
+				int first, second;
+				second = st.back(), st.pop_back();
+				first = st.back();
+				if (ccw(list[first], list[second], list[next]) > 0)
+				{
+					st.push_back(second);
+					break;
+				}
+			}
+			st.push_back(next++);
+		}
+		
+		int size = st.size()-1;
+		int start = 1;
+		ll ans = 0;
+		set rotate1, rotate2;
+		for (int i = 0; i < size; i++)
+		{
+			while (start + 1 != i && cccw(list[st[i]], list[st[i + 1]], list[st[start%(size+1)]], list[st[(start + 1) % (size+1)]]) > 0)
+			{
+				ll tmp;
+				if (ans < (tmp=dist(list[st[i]], list[st[start%(size+1)]])))
+				{
+					rotate1 = list[st[i]];
+					rotate2 = list[st[start % (size + 1)]];
+					ans = tmp;
+				}
+				start++;
+			}
+			ll tmp;
+			if (ans < (tmp=dist(list[st[i]], list[st[start%(size+1)]])))
+			{
+				rotate1=list[st[i]];
+				rotate2 = list[st[start % (size + 1)]];
+				ans = tmp;
+			}
+		}
+		cout << rotate1.second.first << " " << rotate1.second.second << " " << rotate2.second.first << " " << rotate2.second.second << "\n";
+
+	}
+}
