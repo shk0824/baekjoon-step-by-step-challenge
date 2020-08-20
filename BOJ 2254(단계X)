@@ -1,0 +1,77 @@
+#include<iostream>
+#include<queue>
+#include <algorithm>
+#include <stack>
+#include <iomanip>
+#include <cmath>
+#include <map>
+#include <string>
+using namespace std;
+using ll = long long;
+using set = pair<ll, ll>;
+ll ccw(set&fir, set&sec, set&next)
+{
+	return ((sec.first - fir.first)*(next.second - fir.second) - (next.first - fir.first)*(sec.second - fir.second));
+
+}
+deque<set>monotone(deque<set>&list)
+{
+	deque<set>up, down;
+	if (list.size() <= 2)
+		return down;
+	for (auto& v : list)
+	{
+		while (up.size() >= 2 &&ccw(up[up.size() - 2], up.back(), v) >= 0)
+			up.pop_back();
+		up.push_back(v);
+		while (down.size() >= 2 && ccw(down[down.size() - 2], down.back(), v) <= 0)
+			down.pop_back();
+		down.push_back(v);
+	}
+	down.insert(down.end(), up.rbegin() + 1, up.rend() - 1);
+	return down;
+}
+
+bool CheckingPrisonInside(deque<set>&convex, set& prison)
+{
+	if (convex.size() <= 2)
+		return false;
+	for (int i = 0; i < convex.size() - 1; i++)
+		if (ccw(convex[i], convex[i + 1], prison) <= 0)// 모든 convex hull 벡터에 대해 외적을 취하고, 일직선상에 있거나 시계방향에 있다면 내부에 있지 않음
+			return false;
+	return true;
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n,ans=0;
+	set cow;
+	cin >>n>>cow.first >> cow.second;
+	deque<set>list,Convex;
+	for (int i = 0; i < n; i++)
+	{
+		int x, y;
+		cin >> x >> y;
+		list.push_back({ x, y });
+	}
+	sort(list.begin(), list.end());
+	
+	Convex = monotone(list);
+	while (CheckingPrisonInside(Convex, cow))
+	{
+		ans++;
+		for (auto& C : Convex)
+		{
+			for (auto iter = list.begin(); iter != list.end(); iter++)
+				if (C == *iter)
+				{
+					list.erase(iter);
+					break;
+				}
+		}
+		Convex = monotone(list);
+	}
+	cout << ans;
+	
+}
