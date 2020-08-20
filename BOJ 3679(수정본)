@@ -27,7 +27,7 @@ double FindDist(set&a, set&b, set&Point)//선분 ab와 node간의 거리 구하�
 	double AtoPoint = Dist(a, Point);
 	set ABvector = { {b.first.first- a.first.first,b.first.second - a.first.second},0 }, APvector = { {Point.first.first - a.first.first,Point.first.second - a.first.second},0 };
 	double theta = acos(inerProduct(ABvector, APvector)/(AtoBdist*AtoPoint));
-	return AtoPoint*sin(theta);
+	return AtoPoint*abs(sin(theta));
 }
 deque<set>monotone(deque<set>&list)//ConvexHull
 {
