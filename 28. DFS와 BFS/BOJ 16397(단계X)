@@ -1,0 +1,68 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <cmath>
+using namespace std;
+int getSize(int n)
+{
+	int cnt = 0;
+	while (n / 10 != 0)
+		cnt++, n /= 10;
+	cnt++;
+	return cnt;
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+
+	int n, t, g;
+	cin >> n >> t >> g;
+	//g =target
+	bool visit[100000] = { 0 };
+	visit[n] = true;
+	queue<int>que, tmp;
+	que.push(n);
+	int time = 0;
+	bool det = false;
+	while (!que.empty())
+	{
+		int cur = que.front();
+		que.pop();
+		if (cur == g)
+		{
+			det = true;
+			break;
+		}
+		if (time > t)
+			break;
+		//+1
+		if (cur + 1 < 100000&&!visit[cur+1])
+			tmp.push(cur + 1), visit[cur + 1] = true;
+		if (cur != 0)
+		{
+			cur *= 2;
+			if (cur < 100000)
+			{
+				int size = getSize(cur);
+				cur -= (int)pow(10, size - 1);
+				if (!visit[cur])
+					tmp.push(cur), visit[cur] = true;
+			}
+		}
+
+		if (que.empty())
+		{
+			time++;
+			while (!tmp.empty())
+			{
+				que.push(tmp.front());
+				tmp.pop();
+			}
+		}
+	}
+	if (time > t||!det)
+		cout << "ANG";
+	else
+		cout << time;
+}
