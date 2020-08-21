@@ -1,0 +1,91 @@
+#include <iostream>
+#include <algorithm>
+#include <queue>
+#include <stack>
+using namespace std;
+struct path
+{
+	int prev=-1;
+	char dir=NULL;
+};
+int rotatingLeft(int n)
+{
+	if (n / 1000 ==0)
+		n *= 10;
+	else
+	{
+		int spin = n / 1000;
+		n %= 1000;
+		n = n * 10 + spin;
+	}
+	return n;
+
+}
+int rotatingRight(int n)
+{
+	if (n % 10 == 0)
+		n /= 10;
+	else
+	{
+		int spin = n % 10;
+		n /= 10;
+		n = spin * 1000 + n;
+	}
+	return n;
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int test;
+	cin >> test;
+	while (test--)
+	{
+		int a, b;
+		cin >> a >> b;
+		path visit[10000];
+		visit[a].prev = a;
+		queue<path>que, tmp;
+		stack<char>ans;
+		que.push({ a,NULL });
+		while (!que.empty())
+		{
+			int prev = que.front().prev;
+			que.pop();
+			if (prev == b)
+				break;
+			if (visit[(prev * 2) % 10000].prev == -1)
+				visit[(prev * 2) % 10000].prev = prev,visit[(prev * 2) % 10000].dir='D', tmp.push({ (prev * 2) % 10000,'D' });
+			if (prev == 0)
+			{
+				if (visit[9999].prev == -1)
+					visit[9999].prev = prev,visit[9999].dir='S', tmp.push({ 9999,'S' });
+			}
+			else
+				if (visit[prev - 1].prev == -1)
+					visit[prev - 1].prev = prev,visit[prev-1].dir='S',tmp.push({ prev - 1,'S' });
+			int left = rotatingLeft(prev), right = rotatingRight(prev);
+			if (visit[left].prev == -1)
+				visit[left].prev = prev,visit[left].dir='L', tmp.push({ left,'L' });
+			if (visit[right].prev == -1)
+				visit[right].prev = prev,visit[right].dir='R', tmp.push({ right,'R' });
+
+			if (que.empty())
+			{
+				while (!tmp.empty())
+				{
+					que.push(tmp.front());
+					tmp.pop();
+				}
+			}
+		}
+		int end = b;
+		while (visit[end].dir!=NULL)
+			ans.push(visit[end].dir), end = visit[end].prev;
+		while (!ans.empty())
+			cout << ans.top(), ans.pop();
+		cout << "\n";
+	}
+
+	
+}
