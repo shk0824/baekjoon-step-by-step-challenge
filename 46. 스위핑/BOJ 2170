@@ -1,0 +1,45 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <map>
+#include <string>
+#include <math.h>
+using namespace std;
+using ll = long long;
+using set = pair<ll, ll>;
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n;
+	cin >> n;
+	deque<set>list;
+	while (n--)
+	{
+		int x, y;
+		cin >> x >> y;
+		list.push_back({ x,y });
+
+	}
+
+	sort(list.begin(), list.end());
+
+	auto iter = list.begin()+1;
+	while (iter != list.end())
+	{
+		//merge
+		if ((*iter).first <= (*(iter - 1)).second)
+		{
+			if ((*iter).second >= ((*(iter - 1)).second))//실제로 삭제 하면서 연산을 하는 것 보다는 값을 비교해가면서 단순히 더해가면 시간적으로 이득을 볼 수 있지만 
+				(*(iter - 1)).second = (*iter).second;     //논리오류가 생길 가능성이 있을 것 같아서 보다 쉬운 방법으로 구현해보고자 삭제하는 방식을 선택했습니다.
+			iter = list.erase(iter);
+		}
+		else
+			iter++;
+	}
+	ll length = 0;
+	for (auto& e : list)
+		length += e.second - e.first;
+	cout << length;
+}
