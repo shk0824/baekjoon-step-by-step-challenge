@@ -1,0 +1,48 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <map>
+#include <string>
+#include <math.h>
+#include <bitset>
+using namespace std;
+using ll = long long;
+#define INF  5000000
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	
+	int test;
+	cin >> test;
+	while (test--)
+	{
+		int n,cnt=0; cin >> n;
+		priority_queue<int>lower;
+		priority_queue<int, deque<int>, greater<int>>uper;
+		queue<int>ans;
+		for (int i = 0; i < n; i++)
+		{
+			int tmp;
+			cin >> tmp;
+			if (lower.size() == uper.size())
+			{
+				lower.push(tmp);
+				
+				if (!uper.empty()&&lower.top() > uper.top())
+					uper.push(lower.top()), lower.pop(), lower.push(uper.top()),uper.pop();
+			}
+			else
+				uper.push(tmp);
+
+			if ((i+1)% 2 != 0)
+				cnt++,ans.push(lower.top());
+		}
+		cout << cnt << "\n";
+		while (!ans.empty())
+			cout << ans.front()<<" ", ans.pop();
+		cout << "\n";
+	}
+}
