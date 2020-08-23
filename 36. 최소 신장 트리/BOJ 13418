@@ -32,7 +32,7 @@ bool Union(int x, int y, int*parent)
 	}
 	return false;
 }
-int kruskal(priority_queue<set, deque<set>, greater<set>>&pq,int*parent,int n,int dir=-1)
+int kruskal(priority_queue<set, deque<set>, greater<set>>&pq,int*parent,int n,int dir=-1)//set default value 
 {
 	int dist = 0;
 	int merger = 0;
