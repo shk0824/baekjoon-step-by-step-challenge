@@ -1,0 +1,79 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <map>
+#include <string>
+#include <math.h>
+#include <bitset>
+using namespace std;
+using ll = long long;
+#define INF  5000000
+using set = pair<int, pair<int, int>>;
+void init(int n, int*parent)
+{
+	for (int i = 0; i <=n; i++)
+		parent[i] = i;
+}
+int find(int*parent, int target)
+{
+	if (parent[target] == target)
+		return target;
+	return parent[target] = find(parent, parent[target]);
+}
+bool Union(int x, int y, int*parent)
+{
+	x = find(parent, x);
+	y = find(parent, y);
+	if (x != y)
+	{
+		parent[x] = y;
+		return true;
+	}
+	return false;
+}
+int kruskal(priority_queue<set, deque<set>, greater<set>>&pq,int*parent,int n,int dir=-1)
+{
+	int dist = 0;
+	int merger = 0;
+	while (merger < n)
+	{
+		set top = pq.top();
+		pq.pop();
+		if (Union(top.second.first, top.second.second, parent))
+		{
+			merger++;
+			if (dir == -1)
+				dist += top.first;
+			else
+				dist += !top.first;
+		}
+
+	}
+	return dist;
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int vertex, edge;
+	cin >> vertex >> edge;
+	edge++;
+	int*parent = new int[vertex+1];
+	priority_queue<set, deque<set>, greater<set>>MinSt,MaxSt;
+	while (edge--)
+	{
+		int from, to, weight;
+		cin >> from >> to >> weight;
+		MinSt.push({ !weight,{from,to} });
+		MaxSt.push({ weight,{from,to} });
+	}
+	init(vertex, parent);
+	int maxDist = kruskal(MaxSt, parent, vertex,0);
+	maxDist = pow(maxDist, 2);
+	init(vertex, parent);
+	int minDist = kruskal(MinSt, parent, vertex);
+	minDist = pow(minDist, 2);
+	cout << maxDist - minDist;
+
+}
