@@ -1,0 +1,82 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <map>
+#include <string>
+#include <math.h>
+#include <bitset>
+using namespace std;
+using ll = long long;
+#define INF  5000000
+using set = pair<int,int>;
+int isp(deque<string>&list, bool*alpha)
+{
+	int cnt = 0;
+	for (auto& s : list)
+	{
+		bool det = true;
+		for (auto& c : s)
+			if (!alpha[c-'a'])
+			{
+				det = false;
+				break;
+			}
+		if (det)
+			cnt++;
+	}
+	return cnt;
+}
+void DFS(int n, int k, deque<string>&list, int cur, int cnt,bool*alpha,int&max)
+{
+	if (max == n)
+		return;
+	if (cnt == k)
+	{
+		max = std::max(isp(list, alpha), max);
+		return;
+	}
+	if (cur >= 26)
+		return;
+	for (int i = cur; i < 26; i++)
+	{
+		if (alpha[i])
+			continue;
+		alpha[i] = true;
+		DFS(n, k, list, i + 1, cnt + 1, alpha, max);
+		alpha[i] = false;
+	}
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n, k;
+	cin >> n >> k;
+	deque<string>list;
+	int max = 0;
+	int tmpstore = 0;
+	bool visit[26] = { 0 };
+	while (n--)
+	{
+		string s;
+		cin >> s;
+		s = s.substr(4, s.size() - 8);
+		if (s.empty())
+		{
+			tmpstore++;
+			continue;
+		}
+		list.push_back(s);
+		// a,n,t,i,c,
+	}
+	if (k < 5)
+		cout << 0;
+	else
+	{
+		visit[0] = true, visit['n' - 'a'] = true, visit['t' - 'a'] = true, visit['i' - 'a'] = true, visit['c' - 'a'] = true;
+		DFS(n, k-5, list, 0, 0, visit, max);
+		cout << max+tmpstore;
+	}
+	
+}
