@@ -1,0 +1,78 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <map>
+#include <string>
+#include <math.h>
+#include <bitset>
+using namespace std;
+using ll = long long;
+#define INF  5000000
+using set = pair<int,int>;
+bool isp(int row, int col, int n)
+{
+	if (row >= 0 && row < n&&col >= 0 && col < n)
+		return true;
+	return false;
+}
+int findMax(int n,char**map)
+{
+	int Rowmax = 0;
+	int ColMax = 0;
+	for (int i = 0; i < n; i++)
+	{
+		int rowCnt = 0;
+		int ColCnt = 0;
+		char rowPrev = map[i][0];
+		char colPrev = map[0][i];
+		for (int j = 0; j < n; j++)
+		{
+			if (map[i][j] == rowPrev)
+				rowCnt++;
+			else
+				Rowmax = std::max(Rowmax, rowCnt), rowCnt = 1, rowPrev = map[i][j];
+			if (map[j][i] == colPrev)
+				ColCnt++;
+			else
+				ColMax = std::max(ColMax, ColCnt), ColCnt = 1, colPrev = map[j][i];
+		}
+		Rowmax = std::max(Rowmax, rowCnt);
+		ColMax = std::max(ColMax, ColCnt);
+	}
+	return std::max(Rowmax, ColMax);
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n;
+	cin >> n;
+	char**map = new char*[n];
+	for (int i = 0; i < n; i++)
+	{
+		map[i] = new char[n];
+		for (int j = 0; j < n; j++)
+			cin >> map[i][j];
+	}
+	int dx[2] = {1,0};
+	int dy[4] = {0,1 };
+	int maxValue = findMax(n, map);
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+		{
+			for (int k = 0; k < 2; k++)
+			{
+				int row = i + dx[k], col = j + dy[k];
+				if (isp(row, col, n))
+				{
+					swap(map[row][col], map[i][j]);
+					maxValue = std::max(findMax(n, map), maxValue);
+					swap(map[row][col], map[i][j]);
+				}
+			}
+		}
+	}
+	cout << maxValue;
+}
