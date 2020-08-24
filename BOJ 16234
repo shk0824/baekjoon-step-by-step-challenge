@@ -1,0 +1,88 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <map>
+#include <string>
+#include <math.h>
+#include <bitset>
+using namespace std;
+using ll = long long;
+#define INF  5000000
+using set = pair<int, int>;
+bool**init(int n)
+{
+	bool**visit = new bool*[n];
+	for (int i = 0; i < n; i++)
+		visit[i] = new bool[n]();
+	return visit;
+}
+bool isp(int row, int col, int n)
+{
+	if (row >= 0 && row < n&&col >= 0 && col < n)
+		return true;
+	return false;
+}
+void DFS(int**map, int x, int y, int L, int R, int n,deque<set>&p,bool**visit,int&sum)
+{
+	int dx[4] = { -1,1,0,0 };
+	int dy[4] = { 0,0,-1,1 };
+	visit[x][y] = true;
+	p.push_back({ x,y });
+	sum += map[x][y];
+	for (int i = 0; i < 4; i++)
+	{
+		int nextRow = x + dx[i], nextCol = y + dy[i];
+		if (isp(nextRow, nextCol, n) && !visit[nextRow][nextCol])
+		{
+			int diff = abs(map[x][y] - map[nextRow][nextCol]);
+			if (diff >= L && diff <= R)
+				DFS(map, nextRow, nextCol, L, R, n, p, visit,sum);
+		}
+	}
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n, l, r,ans=0;
+	cin >> n >> l >> r;
+	int**map = new int*[n];
+	bool**visit = init(n);
+	
+	for (int i = 0; i < n; i++)
+	{
+		map[i] = new int[n]();
+		for (int j = 0; j < n; j++)
+			cin >> map[i][j];
+	}
+	bool det = true;
+	while (det)
+	{
+		det = false;
+		deque<deque<set>>list;
+		deque<int>score;
+		for(int i=0;i<n;i++)
+			for (int j = 0; j < n; j++)
+			{
+				deque<set>t;
+				int sum = 0;
+				if (!visit[i][j])
+				{
+					DFS(map, i, j, l, r, n, t, visit,sum);
+					if (t.size() > 1)
+						list.push_back(t),det=true,score.push_back(sum);
+				}
+			}
+		visit = init(n);
+		for (int i = 0; i < list.size(); i++)
+		{
+			int changeValue = score[i] / list[i].size();
+			for (auto& e : list[i])
+				map[e.first][e.second] = changeValue;
+		}
+		
+		ans++;
+	}
+	cout << ans-1;
+}
