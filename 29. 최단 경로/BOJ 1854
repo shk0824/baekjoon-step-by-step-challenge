@@ -1,0 +1,59 @@
+#include<iostream>
+#include<queue>
+#include <algorithm>
+#include <stack>
+#include <iomanip>
+#include <cmath>
+#include <map>
+#include <string>
+#include <map>
+#include <bitset>
+using namespace std;
+using ll = long long;
+using set = pair<int, int>;
+void dijkstra(deque<set>*list, int start, priority_queue<int>*kthPath,int k)
+{
+	priority_queue<set, deque<set>, greater<set>>pq;
+	pq.push({ 0,start });
+	kthPath[1].push(0);
+	while (!pq.empty())
+	{
+		int cur = pq.top().second;
+		int curDist = pq.top().first;
+		pq.pop();
+
+		for (auto& edge : list[cur])
+		{
+			int next = edge.second;
+			int nextDist = edge.first + curDist;
+			if (kthPath[next].size() < k)
+			{
+				kthPath[next].push(nextDist);
+				pq.push({ nextDist,next });
+			}
+			else if (kthPath[next].top() > nextDist)
+			{
+				kthPath[next].pop();
+				kthPath[next].push(nextDist);
+				pq.push({ nextDist,next });
+			}
+		}
+	}
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int vertex, edge, k;cin >> vertex >> edge >> k;
+	deque<set>*list = new deque<set>[vertex + 1];
+	priority_queue<int>*kthPath = new priority_queue<int>[vertex + 1];
+	while (edge--)
+	{
+		int from, to, weight;
+		cin >> from >> to >> weight;
+		list[from].push_back({ weight, to });
+	}
+	dijkstra(list, 1, kthPath, k);
+	for (int i = 1; i <= vertex; i++)
+		kthPath[i].size() == k ? cout << kthPath[i].top() : cout << -1, cout << "\n";
+}
