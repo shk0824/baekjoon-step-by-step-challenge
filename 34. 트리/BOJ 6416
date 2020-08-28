@@ -1,0 +1,95 @@
+#include<iostream>
+#include<queue>
+#include <algorithm>
+#include <stack>
+#include <iomanip>
+#include <cmath>
+#include <map>
+#include <string>
+#include <map>
+#include <bitset>
+using namespace std;
+using ll = long long;
+void DFS(deque<int>*list, int start, bool*visit)
+{
+	visit[start] = true;
+	for (auto& e : list[start])
+		if (!visit[e])
+			DFS(list, e, visit);
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int u, v,cnt=1;
+	cin >> u >> v;
+	while (u != -1)
+	{
+		//들어오는거 나가는거 
+		//In ,out
+		map<int, pair<int, int>>info;
+		map<pair<int, int>, int>connect;
+		map<int, int>numberring;
+		int number = 1;
+		deque<pair<int, int>>order;
+		
+		while (u != 0)
+		{
+			order.push_back({ u,v });
+			cin >> u >> v;
+		}
+		
+		for (auto& ele : order)
+		{
+			info[ele.first].second++;
+			info[ele.second].first++;
+			connect[ele]++;
+			if (numberring.find(ele.first) == numberring.end())
+				numberring[ele.first] = number++;
+			if (numberring.find(ele.second) == numberring.end())
+				numberring[ele.second] = number++;
+		}
+		//iner가 하나도 없는 것 즉 루트를 찾아보자
+		int rootCnt = 0;
+		int rootNum = -1;
+		bool impo = false;
+		for (auto& node : info)
+		{
+			if (node.second.first == 0)
+				rootNum = node.first, rootCnt++;
+			//들어오는게 2개 이상이면
+			if (node.second.first >= 2)
+			{
+				impo = true;
+				break;
+			}
+		}
+
+		if (rootCnt >= 2||impo)
+			cout << "Case " << cnt++ << " is not a tree.";
+		else
+		{
+			//connect map을 순회하며 
+			//숫자를 매긴 numberring map을 참조해서 연결리스트를 만듬
+			deque<int>*list = new deque<int>[number];
+			for (auto& e : connect)
+				list[numberring[e.first.first]].push_back(numberring[e.first.second]);
+			rootNum = numberring[rootNum];
+			bool*visit = new bool[number]();
+			DFS(list, rootNum, visit);
+			for (int i = 1; i < number; i++)
+				if (!visit[i])
+				{
+					impo = true;
+					break;
+				}
+			if(impo)
+				cout << "Case " << cnt++ << " is not a tree.";
+			else
+				cout << "Case " << cnt++ << " is a tree.";
+			
+		}
+		cout << "\n";
+		cin >> u >> v;
+	}
+}
