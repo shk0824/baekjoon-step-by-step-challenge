@@ -1,0 +1,12 @@
+a = '\\'
+b = '/'
+c = '('
+d = ')'
+e = '\''
+f = '__'
+g = '|'
+
+print('{}    {}{}'.format(a,b,a))
+print(' {}  {} {}{}'.format(d,c,e,d))
+print('{}  {}  {}'.format(c,b,d))
+print(' {}{}{}{}{}'.format(a,c,f,d,g))
