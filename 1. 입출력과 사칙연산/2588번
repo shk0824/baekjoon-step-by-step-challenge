@@ -28,7 +28,7 @@ print(a*int(b))
 a = int(input())
 b = input()
 
-axb2 = a * int(b[2]) # 질문 있어요!(x와 *의 차이점)
+axb2 = a * int(b[2]) # 질문 있어요!(x와 *의 차이점?)
 axb1 = a * int(b[1])
 axb0 = a * int(b[0])
 axb = a * int(b)
