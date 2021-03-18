@@ -28,7 +28,7 @@ print(a*int(b))
 a = int(input())
 b = input()
 
-axb2 = a * int(b[2]) # 질문 있어요!(x와 *의 차이점?)
+axb2 = a * int(b[2]) # 질문 있어요!(x와 *의 차이점?) x는 알파벳 x를 말하시는 것 같은데, 알파벳은 연산자로 파이썬에서는 인식이 되지 않아요. 곱셈은 *로만 표사할 수 있어요.
 axb1 = a * int(b[1])
 axb0 = a * int(b[0])
 axb = a * int(b)
