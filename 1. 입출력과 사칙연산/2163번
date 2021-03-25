@@ -1,3 +1,0 @@
-N, M = map(int, input().split())
-numbers = N*M-1
-print(numbers)
