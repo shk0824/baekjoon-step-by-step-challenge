@@ -5,7 +5,7 @@
     20171483 한태규
     
     #------------------------- memo -------------------------#
-    URL : https://www.acmicpc.net/step/4
+    URL : https://www.acmicpc.net/step/2
     
     while문 정답 정리
     
