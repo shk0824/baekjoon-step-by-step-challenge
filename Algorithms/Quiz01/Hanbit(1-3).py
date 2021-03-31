@@ -83,5 +83,29 @@ def pleaseConformWithoutHat(caps):
 cap3=['F','F','B','H','B','F','B','B','B','F','H','F','F']
 #pleaseConformWithoutHat(cap3)
 
-if i==len(codes)-1:
+#4
+
+def runlength(codes):
+    coded=""
+    start=0
+    count=1
+    for i in range(1,len(codes)):
+        if codes[start]==codes[i]:
+            count+=1
+        else:
+            coded+=str(count)+codes[start]
+            start=i
+            count=1
+        if i==len(codes)-1:
                 coded+=str(count)+codes[start]
+    return coded
+print(runlength("hihihhhhiihh"))
+
+def decodeRL(coded):
+    for i in coded:
+        if i.isalpha():
+            print(count*i,end="")
+        else:
+            count=int(i)
+
+decodeRL(runlength("hihihhhiihh"))
