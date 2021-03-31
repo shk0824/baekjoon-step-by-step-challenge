@@ -82,3 +82,6 @@ def pleaseConformWithoutHat(caps):
 
 cap3=['F','F','B','H','B','F','B','B','B','F','H','F','F']
 #pleaseConformWithoutHat(cap3)
+
+if i==len(codes)-1:
+                coded+=str(count)+codes[start]
