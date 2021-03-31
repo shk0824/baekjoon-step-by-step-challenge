@@ -102,10 +102,13 @@ def runlength(codes):
 print(runlength("hihihhhhiihh"))
 
 def decodeRL(coded):
+    count=""
     for i in coded:
         if i.isalpha():
+            count=int(count)
             print(count*i,end="")
+            count=""
         else:
-            count=int(i)
+            count+="{}".format(i)
 
 decodeRL(runlength("hihihhhiihh"))
