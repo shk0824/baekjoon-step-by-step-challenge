@@ -1,0 +1,9 @@
+T = input()
+T = int(T)
+
+for k in range(1, T+1):
+    A, B = input().split(' ')
+    A, B = int(A), int(B)
+    C = A+B
+    C = int(C)
+    print('Case #{}: {} + {} = {}'.format(k,A,B,C))
