@@ -1,0 +1,96 @@
+n=input()
+n=int(n)
+if 0< n < 10 :
+    for x in range(1,10):
+        print('{} * {} ='.format(n,x),n*x)
+
+
+# n=input()
+# n=int(n)
+# if 0< n < 10 :
+#     for x in range(1,10):
+#         print('{} * {} = {}'.format(n,x,n*x))
+    
+
+
+t=int(input())
+for x in range(t):
+    a,b=input().split()
+    a=int(a)
+    b=int(b)
+    print(a+b)
+    
+
+
+n=int(input())
+a=0
+for x in range(1,n+1):
+    a+=x
+print(a)
+
+t=int(input())
+import sys
+for x in range(t):
+    a,b=map(int,sys.stdin.readline().split())
+    print(a+b)
+
+
+
+n=int(input())
+for x in range(1,n+1):
+    print(x)
+
+
+
+n=int(input())
+for x in range(n,0,-1):
+    print(x)
+
+
+#왜틀린지 모르겠음
+t=int(input())
+for x in range(1,t+1):
+    a,b=map(int,input().split())
+    print('Case #'+str(x)+':',a+b)
+    
+
+    
+    
+t=int(input())   
+for x in range(1,t+1):
+    a,b=map(int,input().split())
+    print('Case #'+str(x)+':',str(a),'+',str(b),'=',a+b)
+    
+
+
+
+n=int(input())
+for x in range(1,n+1):
+    print(x*'*')
+
+
+
+n=int(input())
+for x in range(1,n+1):
+    print(' '*(n-x)+'*'*x)
+
+
+
+
+
+
+
+
+
+
+n,x=map(int,input().split())
+a=list(map(int,input().split()))
+for i in range(0,n):
+    if a[i]<x:
+        print(a[i],end=" ")
+  
+
+   
+
+
+
