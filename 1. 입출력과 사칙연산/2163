@@ -1,5 +1,0 @@
-n,m = input().split()
-N,M = int(n),int(m)
-
-answer= N*M-1
-print(answer)
