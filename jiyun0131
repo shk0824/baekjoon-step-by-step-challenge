@@ -1,0 +1,53 @@
+1정수 N개의 합
+def solve(a):
+    ans = 0
+    return sum(a)
+   
+   
+2셀프 넘버
+import sys
+sys.setrecursionlimit(10**8)
+
+selfs = [True for _ in range(10001)]
+selfs[0] = False
+
+def d(origin, n):
+    tmp = str(n)
+    
+    for num in tmp:
+        n +=int(num)
+        
+    if origin == n or n> 10000:
+        return
+    
+    selfs[n] = False
+    d(origin, n)
+    
+for i in range(1,10001):
+    d(i,i)
+    
+for i, self in enumerate(selfs):
+    if self:
+        print(i)
+        
+        
+3한수
+def solution(num):
+    if num <100:
+        return True
+    tmp = str(num)
+    
+    for i in range(len(tmp) -2):
+        if int(tmp[i]) + int(tmp[i + 2]) !=2*int(tmp[i+1]):
+            return False
+        
+    return True
+
+n = int(input())
+
+answer = 0
+for i in range(1,n+1):
+    if solution(i):
+        answer +=1
+        
+print(answer)
