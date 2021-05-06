@@ -1,0 +1,4 @@
+word = input()
+
+k = list(word.strip().split())
+print(len(k))
