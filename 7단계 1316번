@@ -1,0 +1,20 @@
+def group(string):
+    result = ""
+    for i in string:
+        if i not in result:
+            result += i
+        else:
+            if i != result[-1]:
+                return False
+            else:
+                result += i
+    return True
+
+num = int(input())
+count = 0
+for k in range(num):
+    string = input()
+    if group(string) == True:
+        count += 1
+
+print(count)
