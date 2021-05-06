@@ -1,0 +1,12 @@
+N=input()
+
+if len(N)==1 or len(N)==2:
+    print(N)
+else:
+    result=99
+    for x in range(100,int(N)+1):
+        y=str(x)
+        if int(y[0])-int(y[1]) == int(y[1])-int(y[2]):
+            result += 1
+    print(result)
+        
