@@ -1,0 +1,25 @@
+def number(word):
+    phone = 0
+    for k in word:
+        if k in ('A','B','C'):
+            phone += 3
+        elif k in ('D','E','F'):
+            phone += 4
+        elif k in ('G','H','I'):
+            phone += 5
+        elif k in ('J','K','L'):
+            phone += 6
+        elif k in ('M','N','O'):
+            phone += 7
+        elif k in ('P','Q','R','S'):
+            phone += 8
+        elif k in ('T','U','V'):
+            phone += 9
+        elif k in ('W','X','Y','Z'):
+            phone += 10
+    return phone
+
+String = input().upper()
+
+num = number(String)
+print(num)
