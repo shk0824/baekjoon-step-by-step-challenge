@@ -1,0 +1,59 @@
+//쉬운 버전
+#include <iostream>
+#include <queue>
+#include <string>
+#include <iomanip>
+#include <math.h>
+using namespace std;
+typedef long long ll;
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	
+	int test;
+	cin >> test;
+	while (test--)
+	{
+		string target, remain;
+		cin >> target >> remain;
+		int prev = 0;
+		
+		int cnt = 0;
+		while ((prev = target.find(remain, prev)) != string::npos)
+			cnt++, prev += remain.size();
+		cnt += target.size() - remain.size()*cnt;
+		cout << cnt << "\n";
+	}
+}
+
+//복잡 버전
+#include <iostream>
+#include <queue>
+#include <string>
+#include <iomanip>
+#include <math.h>
+using namespace std;
+typedef long long ll;
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	
+	int test;
+	cin >> test;
+	while (test--)
+	{
+		string target, remain;
+		cin >> target >> remain;
+		int prev = 0;
+		int find = 0;
+		int cnt = 0;
+		while ((find = target.find(remain, prev)) != string::npos)
+			cnt++, cnt += find - prev, prev = find + remain.size();
+		cnt += target.size() - prev;
+		cout << cnt << "\n";
+	}
+}

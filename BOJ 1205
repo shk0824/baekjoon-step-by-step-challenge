@@ -1,0 +1,92 @@
+//간결한 코드
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <map>
+#include <string>
+#include <math.h>
+using namespace std;
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	
+	int n, score, limit;
+	cin >> n >> score >> limit;
+	
+	int curRate = 1;
+	int sum = 1;
+	
+	for (int i = 0; i < n; i++)
+	{
+		int curScore;
+		cin >> curScore;
+		if (curScore > score)//자신의 점수 보다 크면 등수를 +1
+			curRate++;
+		if (curScore >= score)//자신의 점수보다 크거나 같으면 총 인원수+1
+			sum++;
+	}
+	if (limit <sum)
+		cout << -1;
+	else
+		cout << curRate;
+}
+
+//안좋은 코드
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <map>
+#include <string>
+#include <math.h>
+using namespace std;
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	
+	int n,score,limit;
+	cin >> n>>score>>limit;
+	multimap<int, int,greater<int>>m;
+	m.insert({ score,1 });
+	for (int i = 0; i < n; i++)
+	{
+		int tmp;
+		cin >> tmp;
+		m.insert({ tmp,i + 1 });
+	}
+	deque<deque<int>>list;
+	list.push_back(deque<int>());
+	int prev = (*m.begin()).first;
+	int cur = 0;
+	for (auto& e : m)
+	{
+		if (e.first == prev)
+			list[cur].push_back(e.first);
+		else
+		{
+			prev = e.first;
+			list.push_back(deque<int>());
+			list[++cur].push_back(e.first);
+		}
+	}
+	int rate=1;
+	int sum = 0;
+	int prevRate = 0;
+	for (int i = 0; i <= cur; i++)
+	{
+		rate =1+sum;
+		sum += list[i].size();
+
+		if (list[i].front() ==score)
+			break;
+	}
+	if (sum > limit)
+		cout << -1;
+	else
+		cout << rate;
+}

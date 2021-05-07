@@ -1,0 +1,42 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <map>
+#include <string>
+#include <math.h>
+#include <unordered_map>
+using namespace std;
+typedef long long ll;
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int start, ask,sumTime=0,ans;
+	cin >> start >> ask;
+	int limit = 60 * 3 + 30;
+	bool det = true;
+	for (int i = 0; i < ask; i++)
+	{
+		int time;
+		char state;
+		cin >> time >> state;
+		
+		sumTime += time;
+		if (det)
+		{
+			if (sumTime >= limit)
+				ans = start,det=false;
+		}
+		
+			if (state == 'T')
+				start += 1;
+			if (start >= 9)
+				start /= 9;
+		
+
+
+	}
+	cout << ans;
+}

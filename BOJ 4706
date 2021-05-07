@@ -1,0 +1,27 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <map>
+#include <string>
+#include <math.h>
+#include <unordered_map>
+using namespace std;
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	double ta, tb;
+	cin >> ta >> tb;
+	cout << fixed;
+	cout.precision(3);
+	while (ta != 0 || tb != 0)
+	{
+		long double lamda = tb / ta;
+		long double sq =  sqrt(1 - lamda * lamda);
+		
+		cout <<sq << "\n";
+		cin >> ta >> tb;
+	}
+}

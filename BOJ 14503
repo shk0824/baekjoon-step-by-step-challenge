@@ -1,0 +1,79 @@
+#include<iostream>
+#include<queue>
+#include <algorithm>
+#include <stack>
+#include <iomanip>
+#include <cmath>
+#include <map>
+#include <string>
+using namespace std;
+using ll = long long;
+using set = pair<ll, ll>;
+using info = pair<set, int>;
+bool isp(int row, int col, int Srow, int Scol)
+{
+	if (row >= 0 && row < Srow&&col >= 0 && col < Scol)
+		return true;
+	return false;
+}
+int solution(int**map, pair<int, int>start, int dir,int Srow,int Scol,bool**visit)
+{
+	int clean = 1;
+	int dx[4] = { -1,0,1,0 };
+	int dy[4] = { 0,1,0,-1 };
+	while (1)
+	{
+		//청소구역찾기
+		bool find = false;
+		
+		for (int i = 0; i < 4; i++)
+		{
+			dir = (dir + 3) % 4;
+			int row = start.first + dx[dir], col = start.second + dy[dir];
+			if (isp(row, col, Srow, Scol)&&!map[row][col]&&!visit[row][col])
+			{
+				start.first = row, start.second = col;
+				visit[start.first][start.second] = true;
+				find = true;
+				break;
+			}
+			
+		}
+
+		if (find)
+			clean++;
+		else//청소를 할 곳이 없을 때
+		{
+			//후진이 가능한지?
+			int move = (dir + 2) % 4;
+			if (isp(start.first + dx[move], start.second + dy[move], Srow, Scol)&&!map[start.first+dx[move]][start.second+dy[move]])
+				start.first += dx[move], start.second += dy[move];
+			else
+				break;
+		}
+	}
+	return clean;
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int row, col,dir;
+	cin >> row >> col;
+	int**map = new int*[row];
+	bool**visit = new bool*[row];
+	pair<int, int>start;
+	cin >> start.first >> start.second >> dir;
+	// 북 동 남 서 0 1 2 3
+	for (int i = 0; i < row; i++)
+	{
+		map[i] = new int[col]();
+		visit[i] = new bool[col]();
+		for (int j = 0; j < col; j++)
+			cin >> map[i][j];
+	}
+	visit[start.first][start.second] = true;
+	int ans = solution(map, start, dir, row, col,visit);
+	cout << ans;
+
+}

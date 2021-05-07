@@ -1,0 +1,66 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <map>
+#include <string>
+#include <math.h>
+#include <bitset>
+using namespace std;
+using ll = long long;
+#define INF  5000000
+using set = pair<int, pair<int, int>>;
+void draw(int x, int y, deque<set>&list,bool visit[101][101])
+{
+	int dx[4] = { 1,0,-1,0 };
+	int dy[4] = { 0,-1,0,1 };
+	int start = list.size()-1;
+	for (int i = start; i >= 0; i--)
+	{
+		int nextDir = (list[i].first + 1) % 4;
+		int nextRow = x + dx[nextDir], nextCol = y+ dy[nextDir];
+		visit[nextRow][nextCol] = true;
+		list.push_back({ nextDir,{nextRow,nextCol} });
+		x = nextRow, y = nextCol;//직전 좌표를 기준으로 새로운 방향을 갱신하면서 그려감
+	}
+	
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n;
+	cin >> n;
+	int dx[4] = { 1,0,-1,0 };
+	int dy[4] = { 0,-1,0,1 };
+	bool visit[101][101] = { 0 };
+	for (int i = 0; i < n; i++)
+	{
+		int x, y,dir,gen;
+		int stage = 0;
+		cin >> x >> y >> dir >> gen;
+		deque<set>list;
+		visit[x][y] = true;
+		visit[x + dx[dir]][y + dy[dir]] = true;
+		list.push_back({ dir,{x + dx[dir],y + dy[dir]} });
+		while (gen--)
+			draw(list.back().second.first, list.back().second.second, list, visit);
+
+	}
+	int dxx[4] = { 0,1,1,0 };
+	int dyy[4] = { 0,0,1,1 };
+	int ans = 0;
+	for (int i = 0; i < 100; i++)
+	{
+		for (int j = 0; j < 100; j++)
+		{
+			int cnt = 0;
+			for (int k = 0; k < 4; k++)
+				if (visit[i + dxx[k]][j + dyy[k]])
+					cnt++;
+			if (cnt == 4)
+				ans++;
+		}
+	}
+	cout << ans;
+}

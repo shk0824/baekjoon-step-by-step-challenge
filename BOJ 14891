@@ -1,0 +1,104 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <map>
+#include <string>
+#include <math.h>
+#include <bitset>
+using namespace std;
+using ll = long long;
+#define INF  5000000
+void clockWise(deque<deque<char>>&list, int p)
+{
+	list[p].push_front(list[p].back());
+	list[p].pop_back();
+	return;
+}
+void CounterClockWise(deque<deque<char>>&list, int p)//반시계
+{
+	list[p].push_back(list[p].front());
+	list[p].pop_front();
+	return;
+}
+void solve(deque<deque<char>>&list, int p, int dir,bool*visit)
+{
+	int candidate[2] = { p - 1,p + 1 };//좌 우접근
+	visit[p] = true;
+	for (int i = 0; i < 2; i++)
+	{
+		if (i == 0)//left
+		{
+			if (candidate[i] >= 0 && candidate[i] < 4 && !visit[candidate[i]] && list[p][6] != list[candidate[i]][2])//중첩을 방지하기 위해 visit사용
+				solve(list, candidate[i], -1 * dir, visit);
+			
+		}
+		else//right
+		{
+			if (candidate[i] >= 0 && candidate[i] < 4 && !visit[candidate[i]] && list[p][2]!= list[candidate[i]][6])//현재 돌아가는 톱니의 반대 방향으로 움직임
+				solve(list, candidate[i], -1 * dir, visit);
+		}
+	}
+	if (dir == 1)
+		clockWise(list, p);
+	else
+		CounterClockWise(list, p);
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	deque<deque<char>>list(4);
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			char state;
+			cin >> state;
+			list[i].push_back(state);
+		}
+	}
+	int setting,ans=0;
+	cin >> setting;
+	int score[4] = { 1,2,4,8 };
+	while (setting--)
+	{
+		int p, dir;
+		cin >> p >> dir;
+		p -= 1;
+		bool*visit = new bool[4]();
+		// 1 = clockwise -1=counterclockwise
+		solve(list, p, dir,visit);
+	}
+	for (int i = 0; i < 4; i++)
+		if (list[i].front() =='1')
+			ans += score[i];
+	cout << ans;
+}
+
+
+//solve부분 다르게 구현한 버전, 지저분함
+void solve(deque<deque<char>>&list, int p, int dir,bool*visit)
+{
+	int candidate[2] = { p - 1,p + 1 };
+	int leftCmp, rightCmp;
+	if (dir == 1)
+		clockWise(list, p), leftCmp = 7, rightCmp = 3;
+	else
+		CounterClockWise(list, p), leftCmp = 5, rightCmp = 1;
+	visit[p] = true;
+	for (int i = 0; i < 2; i++)
+	{
+		if (i == 0)//left
+		{
+			if (candidate[i] >= 0 && candidate[i] < 4 && !visit[candidate[i]] && list[p][leftCmp] != list[candidate[i]][2])
+				solve(list, candidate[i], -1 * dir, visit);
+		}
+		else//right
+		{
+			if (candidate[i] >= 0 && candidate[i] < 4 && !visit[candidate[i]] && list[p][rightCmp]!= list[candidate[i]][6])
+				solve(list, candidate[i], -1 * dir, visit);
+		}
+	}
+			
+}
