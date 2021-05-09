@@ -1,0 +1,105 @@
+n=int(input())
+a=list(map(int,input().split()))
+print(min(a),max(a))
+
+a=int(input())
+b=int(input())
+c=int(input())
+d=int(input())
+e=int(input())
+f=int(input())
+g=int(input())
+h=int(input())
+i=int(input())
+l=[a,b,c,d,e,f,g,h,i]
+for x,y in enumerate(l):
+    if y==max(l):
+        print(y)
+        print(x+1)
+
+
+a=int(input())
+b=int(input())
+c=int(input())
+d=a*b*c
+d=str(d)
+
+print(d.count("0"))
+print(d.count("1"))
+print(d.count("2"))
+print(d.count("3"))
+print(d.count("4"))
+print(d.count("5"))
+print(d.count("6"))
+print(d.count("7"))
+print(d.count("8"))
+print(d.count("9"))
+
+
+
+a=int(input())
+b=int(input())
+c=int(input())
+d=int(input())
+e=int(input())
+f=int(input())
+g=int(input())
+h=int(input())
+i=int(input())
+j=int(input())
+
+m=[]
+for x in [a,b,c,d,e,f,g,h,i,j]:
+    k=list(divmod(x,42))
+    
+    m+=[k[1]]
+print(len(list(set(m))))
+   
+
+
+
+
+n=int(input())
+a=list(map(int,input().split()))
+b=max(a)
+p=0
+a1=[]
+for x in a:
+    c=x/b*100
+    a1+=[c]
+
+for x in a1:
+    p+=x
+answer=(p*100)/n
+print(answer/100)    
+        
+
+
+
+
+
+
+
+
+import math
+n=int(input())
+
+for x in range(n):
+    s=0
+    c=0
+
+
+    a=list(map(int,input().split()))
+    a0=a[0]
+    a=a[1:]
+
+    for y in a:
+
+        s+=y
+    
+    for k in a:
+        if s/a0 <k :
+            c+=1
+    # print(round(c/a0*100,3),"%",sep="")
+    o=round(c/a0*100,3)
+    print("{:5.3f}%".format(o))
