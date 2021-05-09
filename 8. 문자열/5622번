@@ -1,0 +1,9 @@
+word = input()
+alphabet = ['ABC', 'DEF' , 'GHI' , 'JKL' , 'MNO' , 'PQRS' , 'TUV', 'WXYZ']
+total = 0
+for one in alphabet:
+    for x in one :
+        for i in word:
+            if i == x:
+                total += alphabet.index(one)+3
+print(total) 
