@@ -1,0 +1,13 @@
+while True:
+    num = map(int,input().split())
+    t = list(num)
+    if sum(t) == 0:
+        break
+    m = max(t)
+    t.remove(m)
+    if t[0]**2 + t[1]**2 == m**2:
+        print('right')
+    else:
+        print('wrong')
+        
+        
