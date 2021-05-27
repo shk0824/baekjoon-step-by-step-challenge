@@ -1,0 +1,31 @@
+X=int(input())
+k=0
+indexline=0
+line=0
+a=0
+b=0
+while True:
+    k+=1
+    indexline+=k
+    line=k
+    if indexline>=X:
+        break
+        
+if line%2!=0:
+    a=line
+    b=1
+    for i in range(indexline-line+1,X+1):
+        if i==X:
+            print("{}/{}".format(a,b))
+            break
+        a-=1
+        b+=1
+else:
+    a=1
+    b=line
+    for i in range(indexline-line+1,X+1):
+        if i==X:
+            print("{}/{}".format(a,b))
+            break
+        a+=1
+        b-=1
