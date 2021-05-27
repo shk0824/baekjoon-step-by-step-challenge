@@ -1,0 +1,13 @@
+T = int(input())
+for i in range(T):
+    a, b = map(int, input().split())
+    c = b - a
+    N = 1
+    while True:
+        if c <=N**2:
+            if c < N**2-N+1:
+                print(N*2-2)
+            else:
+                print(N*2-1)
+            break
+        N+=1
