@@ -1,0 +1,33 @@
+def solve(a):
+    return sum(a)
+
+
+
+
+a=set(range(1,10001))
+b=set()
+for i in range(1,10001):
+    for j in str(i):
+        i+=int(j)
+    b.add(i)
+
+c=a-b
+
+for y in sorted(c):
+    print(y)
+
+
+n=int(input())
+def f():
+    c=0
+    for k in range(1,n+1):
+        if 100<=k<1000:
+            k=str(k)
+            if int(k[0])+int(k[2])==2*int(k[1]):
+                c+=1
+            else:
+                pass
+        elif k<100 :
+            c+=1
+    print(c)
+f()  
