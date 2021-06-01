@@ -1,6 +1,8 @@
-T=int(input())
+
+T = int(input())
 for i in range(T):
-    R,S=input().split()
-    for j in S:
-        print(j*int(R),end="")
+    P , S = input().split()
+    for x in S:
+        print(x * int(P), end = "")
+
     print()

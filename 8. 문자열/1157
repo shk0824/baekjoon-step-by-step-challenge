@@ -1,8 +1,12 @@
-A=input().upper()
-cnt=[]
-for i in set(A):
-    cnt+=[A.count(i)]
-if cnt.count(max(cnt))>=2:
-    print("?")
+
+a = input().upper()
+b = list(set(a))
+c = []
+for x in b:
+    i = a.count(x)
+    c.append(i)
+if c.count(max(c)) > 1:
+    print('?')
 else:
-    print(list(set(A))[cnt.index(max(cnt))])
+    d = c.index(max(c))
+    print(b[d])

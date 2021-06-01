@@ -1,11 +1,16 @@
-T = int(input())
-for i in range(T):
-    a, b = map(int, input().split())
-    c = b - a
-    N = 1
+
+testnum=int(input())
+
+
+
+for _ in range(testnum):
+    x,y=[int(x) for x in input().split()]
+    N=1
+    distance=y-x
     while True:
-        if c <=N**2:
-            if c < N**2-N+1:
+        if distance <=N**2:
+            if distance < N**2-N+1:
+
                 print(N*2-2)
             else:
                 print(N*2-1)

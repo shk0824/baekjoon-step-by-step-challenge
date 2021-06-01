@@ -1,0 +1,37 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <map>
+#include <string>
+#include <math.h>
+#include <unordered_map>
+using namespace std;
+typedef long long ll;
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int length, width, height, volume;
+	cin >> length >> width >> height >> volume;
+
+	while (length != 0 || width != 0 || height != 0 || volume != 0)
+	{
+		
+		if (length == 0 || width == 0 || height == 0)
+		{
+			if (length == 0)
+				length = volume / (width*height);
+			else if (width == 0)
+				width = volume / (height*length);
+			else
+				height = volume / (length*width);
+		}
+		else
+			volume = length * width*height;
+		cout << length <<" "<<width <<" "<<height <<" "<< volume;
+		cout << "\n";
+		cin >> length >> width >> height >> volume;
+	}
+
+}

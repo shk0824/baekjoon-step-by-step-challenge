@@ -1,0 +1,35 @@
+#include<iostream>
+#include <queue>
+#include <stack>
+#include <string>
+#include <map>
+#include <cmath>
+using namespace std;
+
+int main(void)
+{
+	cin.sync_with_stdio(false);
+	cin.tie(NULL);
+	int test;
+	cin >> test;
+	int a = 0, b = 0, c = 0;
+	int sumA = 0, sumB = 0, sumC = 0;
+	while (test--)
+	{
+		cin >> a >> b >> c;
+		sumA += a, sumB += b, sumC += c;
+		//minValue값을 구해서 30이상인지 확인후 
+		//가능 하면 minvalue만큼 출력 if not print out NO
+		int minValue = sumA < sumB ? sumA : sumB;
+		minValue = minValue < sumC ? minValue : sumC;
+
+		if (minValue >= 30)
+		{
+			cout << minValue;
+			sumA -= minValue, sumB -= minValue, sumC -= minValue;
+		}
+		else
+			cout << "NO";
+		cout << "\n";
+	}
+}

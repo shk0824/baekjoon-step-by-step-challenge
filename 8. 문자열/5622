@@ -1,3 +1,4 @@
+
 dial = ['ABC', 'DEF', 'GHI', 'JKL', 'MNO', 'PQRS', 'TUV', 'WXYZ']
 cnt = 0
 A = input()
@@ -6,3 +7,4 @@ for i in range(len(A)):
         if A[i] in j:
             cnt += dial.index(j)+3
 print(cnt)
+

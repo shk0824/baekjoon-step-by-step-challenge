@@ -1,2 +1,3 @@
-W=input().split()
-print(len(W))
+a = str(input()).split()
+print(len(a))
+

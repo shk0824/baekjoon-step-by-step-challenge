@@ -1,0 +1,10 @@
+
+s = str(input())
+b = list('abcdefghijklmnopqrstuvwxyz')
+word = list(s)
+for i in b:
+    if i in word:
+        print(word.index(i), end = " ")
+    else:
+        print(-1, end = " ")
+

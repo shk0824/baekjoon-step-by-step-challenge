@@ -1,0 +1,111 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <map>
+#include <string>
+#include <math.h>
+#include <bitset>
+using namespace std;
+using ll = long long;
+#define INF  5000000
+using set = pair<int,int>;
+bool isp(int row, int col, int n)
+{
+	if (row >= 0 && row < n&&col >= 0 && col < n)
+		return true;
+	return false;
+}
+bool**init(int n)
+{
+	bool**visit = new bool*[n];
+	for (int i = 0; i < n; i++)
+		visit[i] = new bool[n]();
+	return visit;
+}
+pair<int, int>FindTarget(int**map, int x, int y, int n,int curSize,int&time)
+{
+	int dx[4] = { -1,1,0,0 };
+	int dy[4] = { 0,0,-1,1 };
+	bool**visit = init(n);
+	visit[x][y] = true;
+	queue<set>que, tmp;
+	que.push({ x,y});
+	int dist = 0;
+	deque<set>list;
+	while (!que.empty())
+	{
+		int curX = que.front().first, curY = que.front().second;
+		que.pop();
+
+		for (int i = 0; i < 4; i++)
+		{
+			int nextX = curX + dx[i], nextY = curY + dy[i];
+			if (isp(nextX, nextY, n)&&!visit[nextX][nextY])
+			{
+				
+				if (map[nextX][nextY] <=curSize)
+				{
+					tmp.push({ nextX,nextY });
+					visit[nextX][nextY] = true;
+					if (map[nextX][nextY] > 0 && map[nextX][nextY] < curSize)
+						list.push_back({ nextX,nextY });
+				}
+
+			}
+		}
+
+		if (que.empty())
+		{
+			dist++;
+			if (!list.empty())
+			{
+				sort(list.begin(), list.end());
+				time = dist;
+				map[list.front().first][list.front().second] = 0;
+				return { list.front().first,list.front().second };
+			}
+			while (!tmp.empty())
+			{
+				que.push(tmp.front());
+				tmp.pop();
+			}
+		}
+	}
+	return { -1,-1 };
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int n;
+	cin >> n;
+	int**map = new int*[n];
+	int Size = 2;
+	int time = 0,sizeStack=0;
+	pair<int, int>start;
+	for (int i = 0; i < n; i++)
+	{
+		map[i] = new int[n]();
+		for (int j = 0; j < n; j++)
+		{
+			cin >> map[i][j];
+			if (map[i][j] == 9)
+				start.first = i, start.second = j,map[i][j]=0;
+		}
+
+	}
+	while (1)
+	{
+		
+		int tmpTime = 0;
+		start=FindTarget(map, start.first, start.second, n, Size,tmpTime);
+		if (start.first == -1 && start.second == -1)
+			break;
+		sizeStack++;
+		time += tmpTime;
+		if (Size <= sizeStack)
+			sizeStack -= Size, Size++;
+	}
+	cout << time;
+}

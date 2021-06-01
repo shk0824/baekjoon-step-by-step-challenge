@@ -1,9 +1,14 @@
+
 T = int(input())
-for i in range(T) :
+for i in range(T):
     H, W, N = map(int, input().split())
-    A = N % H;
-    B = N // H+1
-    if A == 0 : 
-        A = H
-        B -= 1
-    print(A*100 + B)
+    Y = 0
+    X = 0
+    if N % H == 0:
+        Y = H * 100
+        X = N // H
+    else:
+        Y = (N % H) * 100
+        X = (N // H)+1
+
+    print(Y+X)

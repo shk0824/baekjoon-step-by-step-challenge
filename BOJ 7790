@@ -1,0 +1,26 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <map>
+#include <string>
+#include <math.h>
+#include <unordered_map>
+using namespace std;
+typedef long long ll;
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	
+	string s;
+	int cnt = 0;
+	while (cin >> s)
+	{
+		int p = -4;
+		while ((p = s.find("joke", p+4)) != string::npos)
+			cnt++;
+	}
+	cout << cnt;
+}

@@ -1,4 +1,0 @@
-A,I = input().split()
-A,I = int(A), int(I)
-
-print(A*(I-1)+1)

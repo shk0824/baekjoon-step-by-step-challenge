@@ -1,0 +1,26 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <map>
+#include <string>
+#include <math.h>
+#include <unordered_map>
+using namespace std;
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	double mile;
+	cin >> mile;
+	cout << fixed;
+	cout.precision(2);//소수점 
+	while (mile != 0.0)
+	{
+		double romaMile = mile * 5280 / 4854;
+		cout << mile << " English miles equals " << romaMile << " Roman miles or " << (int)round(romaMile * 1000) << " paces.\n";//반올림
+
+		cin >> mile;
+	}
+}
