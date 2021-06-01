@@ -1,0 +1,22 @@
+T = int(input())
+for i in range(T):
+    x, y = map(int,input().split())
+
+    half = (x + y) / 2
+    cnt = 1
+    k = 1
+    x = x + k
+    k_arr = [1]
+    while x < half:
+        k = k + 1
+        k_arr.append(k)
+        x = x + k
+        cnt += 1
+
+    if x == half:
+        print(cnt * 2)
+    else:
+        if x + (sum(k_arr) - k_arr[-1]) >= y:
+            print(cnt * 2 - 1)
+        else:
+            print(cnt * 2)

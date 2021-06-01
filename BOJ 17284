@@ -1,0 +1,27 @@
+#include<iostream>
+#include <queue>
+#include <stack>
+#include <string>
+#include <map>
+using namespace std;
+
+int main(void)
+{
+	cin.sync_with_stdio(false);
+	cin.tie(NULL);
+
+	int button;
+	int sum = 5000;
+	while (cin>>button)
+	{
+		int minus;
+		if (button == 1)
+			minus = 500;
+		else if (button == 2)
+			minus = 800;
+		else
+			minus = 1000;
+		sum -= minus;
+	}
+	cout << sum;
+}

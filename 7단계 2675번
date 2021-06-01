@@ -1,0 +1,7 @@
+ = int(input())
+
+for k in range(T):
+    num, word = input().split(' ')
+    for x in word:
+        print(x*int(num), end = '')
+    print()

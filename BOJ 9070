@@ -1,0 +1,49 @@
+#include<iostream>
+#include <queue>
+#include <stack>
+#include <string>
+#include <map>
+#include <cmath>
+using namespace std;
+
+int main(void)
+{
+	cin.sync_with_stdio(false);
+	cin.tie(NULL);
+
+	int test;
+	cin >> test;
+	while (test--)
+	{
+		int k,cnt=0;
+		cin >> k;
+		deque<pair<int, int>>list(k);
+		deque<int>Index;
+		double min = 100000;
+		for (int i = 0; i < k; i++)
+		{
+			cin >> list[i].first >> list[i].second;
+			if (min > list[i].second / (double)list[i].first)
+				min = list[i].second / (double)list[i].first;
+		}
+
+		for (int i = 0; i < k; i++)
+		{
+			if (min == list[i].second / (double)list[i].first)
+				cnt++, Index.push_back(i);
+		}
+
+		if (Index.size() == 1)
+			cout << list[Index.front()].second;
+		else
+		{
+			int minValue = list[Index.front()].second;
+			
+			for (auto& e : Index)
+				if (minValue > list[e].second)
+					minValue = list[e].second;
+			cout << minValue;
+		}
+		cout << "\n";
+	}
+}

@@ -1,0 +1,8 @@
+N = int(input())
+num = list(input())
+sum = 0
+
+for k in range(N):
+    sum += int(num[k])
+
+print(sum)

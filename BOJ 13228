@@ -1,0 +1,25 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <map>
+#include <string>
+#include <math.h>
+#include <unordered_map>
+using namespace std;
+typedef long long ll;
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	int test;
+	cin >> test;
+	for (int i = 0; i < test; i++)
+	{
+		int x1, y1, z1, x2, y2, z2,dist=0;
+		cin >> x1 >> y1 >> z1 >> x2 >> y2 >> z2;
+		dist += abs(x1 - x2) + abs(y1 - y2) + z1 + z2;
+		cout << dist << "\n";
+	}
+}

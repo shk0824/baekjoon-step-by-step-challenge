@@ -1,0 +1,12 @@
+x_list = []
+y_list = []
+for i in range(3):
+    x , y = map(int,input().split())
+    x_list += [x]
+    y_list += [y]
+for k in range(3):
+    if x_list.count(x_list[k]) == 1:
+        X = x_list[k]
+    if y_list.count(y_list[k]) == 1:
+        Y = y_list[k]
+print(X,Y)

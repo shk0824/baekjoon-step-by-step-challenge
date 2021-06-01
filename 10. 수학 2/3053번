@@ -1,0 +1,6 @@
+import math
+r = int(input())
+Euclid = r**2 * math.pi
+print(Euclid)
+Taxi = 2*r*r
+print(Taxi)

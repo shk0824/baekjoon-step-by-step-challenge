@@ -1,0 +1,8 @@
+N = input()
+N = int(N)
+
+for k in range(1, N+1):
+    if k != N:
+        print(' '*(N-k) + '*'*k)
+    else:
+        print('*'*k)

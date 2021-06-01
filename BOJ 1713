@@ -1,0 +1,67 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <map>
+#include <string>
+#include <math.h>
+#include <unordered_map>
+using namespace std;
+typedef pair<int, pair<int, int>>set;
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	map<int, int>m;
+	int n,recommend;
+	cin >> n >> recommend;
+
+	bool frame[101] = { 0 };
+	int time[101] = { 0 };
+	for (int i = 0; i < recommend; i++)
+	{
+		int candidate;
+		cin >> candidate;
+		if (m.find(candidate) != m.end())
+			m[candidate]++;
+		else if (n > 0)
+			frame[candidate] = true, n--,m[candidate]++;
+		else
+		{
+			int recommendmin = 10000;
+			int eraseIndex = -1;
+			for (auto& e : m)
+				if (recommendmin > e.second)
+					recommendmin = e.second;
+
+			deque<int>eraseCandidate;
+			for (auto& e : m)
+				if (e.second == recommendmin)
+					eraseCandidate.push_back(e.first);
+
+			if (eraseCandidate.size() == 1)
+				eraseIndex = eraseCandidate.front();
+			else
+			{
+				int timeMax = 0;
+				for (auto& ele : eraseCandidate)
+					if (time[ele] > timeMax)
+						timeMax = time[ele], eraseIndex = ele;
+			}
+
+			m.erase(m.find(eraseIndex));
+			time[eraseIndex] = 0;
+			frame[eraseIndex] = false;
+			m[candidate]++;
+			frame[candidate] = true;
+
+		}
+		for (auto& e : m)
+			time[e.first]++;
+
+	}
+	for (auto& e : m)
+		cout << e.first << " ";
+	
+}

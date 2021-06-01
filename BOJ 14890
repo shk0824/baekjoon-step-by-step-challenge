@@ -1,0 +1,126 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <map>
+#include <string>
+#include <math.h>
+using namespace std;
+using ll = long long;
+bool isp(int row, int col, int n)
+{
+	if (row >= 0 && row < n&&col >= 0 && col < n)
+		return true;
+	return false;
+}
+int Checking(int**map, bool**visit,int n,int l)
+{
+	int cnt = 0;
+	for (int i = 0; i < n; i++)
+	{
+		bool det = true;
+		for (int j = 1; j < n; j++)
+		{
+			if (map[i][j] == map[i][j - 1])
+				continue;
+
+			//ㅣ길이 만큼 둘 수 있는지 확인
+			if (map[i][j] - 1 == map[i][j - 1])
+			{
+
+				if (isp(i, j - l, n))
+				{
+					//모두 같은 값인지
+					bool pos = true;
+					int cmp = map[i][j - 1];
+					for (int k = j - 1; k >= j - l; k--)
+						if (visit[i][k] || cmp != map[i][k])
+						{
+							pos = false;
+							break;
+						}
+
+					if (pos)
+					{
+						for (int k = j - 1; k >= j - l; k--)
+							visit[i][k] = true;
+					}
+					else
+					{
+						det = false;
+						break;
+					}
+				}
+				else
+				{
+					det = false;
+					break;
+				}
+
+			}
+			else if (map[i][j] == map[i][j - 1] - 1)
+			{
+				if (isp(i, j + l - 1, n))
+				{
+					int cmp = map[i][j];
+					bool pos = true;
+					for (int k = j; k <= j + l - 1; k++)
+						if (visit[i][k] || cmp != map[i][k])
+						{
+							pos = false;
+							break;
+						}
+
+					if (pos)
+					{
+						for (int k = j; k <= j + l - 1; k++)
+							visit[i][k] = true;
+						j += l - 1;
+					}
+					else
+					{
+						det = false;
+						break;
+					}
+				}
+				else
+				{
+					det = false;
+					break;
+				}
+			}
+			else
+			{
+				det = false;
+				break;
+			}
+		}
+		if (det)
+		{
+			cnt++;
+		}
+	}
+	return cnt;
+}
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	
+	int n, l,cnt=0;
+	cin >> n >> l;
+	int**map = new int*[n];
+	int**reverseMap = new int*[n];
+	bool**visit = new bool*[n];
+	bool**reverse = new bool*[n];
+	for (int i = 0; i < n; i++)
+		map[i] = new int[n](),visit[i]=new bool[n](),reverse[i]=new bool[n](),reverseMap[i]=new int[n]();
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < n; j++)
+			cin >> map[i][j],reverseMap[j][i]=map[i][j];
+	cnt += Checking(map, visit, n, l);
+	cnt += Checking(reverseMap, reverse, n, l);
+	cout << cnt;
+	
+	
+}

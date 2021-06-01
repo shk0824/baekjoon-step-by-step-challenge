@@ -1,9 +1,0 @@
-def time(a,b,c):
-    if 0<=a<=23 and 0<=b<=59 and 0<=c<=1000:
-        minute = (b+c)%60
-        hour = (a + (b+c)//60)%24
-        return print(hour, minute)
-
-A, B = map(int, input().split())
-C = int(input())
-time(A,B,C)

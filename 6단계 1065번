@@ -1,0 +1,21 @@
+def k(x):
+    x_str = str(x)
+    x_len = len(x_str)
+    m_set = set()
+    if (x_len == 1) | (x_len == 2):
+        return 1
+    else:
+        for i in range(x_len-1):
+            m_set.add(int(x_str[i]) - int(x_str[i+1]))
+        if len(m_set) == 1:
+            return 1
+        else:
+            return 0
+
+n = int(input())
+count = 0
+
+for j in range(1, n+1):
+    count += k(j)
+
+print(count)

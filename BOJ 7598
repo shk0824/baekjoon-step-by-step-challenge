@@ -1,0 +1,42 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <map>
+#include <string>
+#include <math.h>
+#include <unordered_map>
+using namespace std;
+typedef long long ll;
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	string scnario;
+	int seats;
+	cin >> scnario >> seats;
+
+	while (scnario != "#" || seats != 0)
+	{
+		string order;
+		int n;
+		cin >> order >> n;
+		while (order != "X" || n!=0)
+		{
+			if (order == "B")
+			{
+				if (seats + n <= 68)
+					seats += n;
+
+			}
+			else
+			{
+				if (seats - n >= 0)
+					seats -= n;
+			}
+			cin >> order >> n;
+		}
+		cout << scnario << " " << seats << "\n";
+		cin >> scnario >> seats;
+	}
+}
