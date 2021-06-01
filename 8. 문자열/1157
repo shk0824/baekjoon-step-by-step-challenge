@@ -1,3 +1,4 @@
+
 a = input().upper()
 b = list(set(a))
 c = []

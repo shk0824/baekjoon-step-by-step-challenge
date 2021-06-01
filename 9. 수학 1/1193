@@ -1,3 +1,4 @@
+
 input_num = int(input())
 
 line = 0  # 사선 라인

@@ -1,4 +1,4 @@
-  
+
 import sys
 
 for line in sys.stdin:
@@ -9,3 +9,4 @@ for line in sys.stdin:
     f_days=b_days-s_days 
     if f_days%1!=0: print(int(f_days)+2) 
     else: print(int(f_days)+1) 
+

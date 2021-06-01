@@ -1,4 +1,4 @@
-  
+
 testnum=int(input())
 
 
@@ -10,6 +10,7 @@ for _ in range(testnum):
     while True:
         if distance <=N**2:
             if distance < N**2-N+1:
+
                 print(N*2-2)
             else:
                 print(N*2-1)

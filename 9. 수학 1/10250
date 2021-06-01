@@ -10,5 +10,5 @@ for i in range(T):
     else:
         Y = (N % H) * 100
         X = (N // H)+1
-    print(Y+X)
 
+    print(Y+X)
