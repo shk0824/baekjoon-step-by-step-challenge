@@ -1,0 +1,26 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <map>
+#include <string>
+#include <math.h>
+#include <unordered_map>
+using namespace std;
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	double weight;
+	cin >> weight;
+	cout << fixed;
+	cout.precision(2);
+	while (weight >= 0)
+	{
+		double moonWeight = 0.167*weight;
+		cout << "Objects weighing " << weight << " on Earth will weigh " << moonWeight << " on the moon.\n";
+		cin >> weight;
+	}
+	
+}

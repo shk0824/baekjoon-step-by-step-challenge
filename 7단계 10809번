@@ -1,0 +1,5 @@
+S = input()
+num = list(range(97,123))
+
+for ascii_num in num:
+    print(S.find(chr(ascii_num)))

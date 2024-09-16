@@ -1,0 +1,8 @@
+
+T = int(input())
+for i in range(T):
+    P , S = input().split()
+    for x in S:
+        print(x * int(P), end = "")
+
+    print()

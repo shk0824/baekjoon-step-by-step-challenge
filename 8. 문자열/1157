@@ -1,0 +1,12 @@
+
+a = input().upper()
+b = list(set(a))
+c = []
+for x in b:
+    i = a.count(x)
+    c.append(i)
+if c.count(max(c)) > 1:
+    print('?')
+else:
+    d = c.index(max(c))
+    print(b[d])

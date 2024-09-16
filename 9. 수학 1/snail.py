@@ -1,0 +1,10 @@
+import sys
+
+for line in sys.stdin:
+    A,B,V=[int(x) for x in line.split()]
+    net_distance=A-B 
+    b_days=V/net_distance
+    s_days=A/net_distance
+    f_days=b_days-s_days 
+    if f_days%1!=0: print(int(f_days)+2) 
+    else: print(int(f_days)+1) 

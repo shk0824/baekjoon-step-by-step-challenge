@@ -1,0 +1,9 @@
+N=set(range(1,10001))
+M=set()
+for k in N:
+    for i in str(k):
+        k+=int(i)
+    M.add(k)
+A=N-M
+for j in sorted(A):
+    print(j)

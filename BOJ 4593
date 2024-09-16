@@ -1,0 +1,51 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <map>
+#include <string>
+#include <math.h>
+#include <unordered_map>
+using namespace std;
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	string player1, player2;
+	cin >> player1 >> player2;
+
+	while (player1 != "E"&&player2 != "E")
+	{
+		int p1 = 0, p2 = 0;
+		for (int i = 0; i < player1.size(); i++)
+		{
+			if (player1[i] == player2[i])
+				continue;
+
+			if (player1[i] == 'R')
+			{
+				if (player2[i] == 'P')
+					p2++;
+				else
+					p1++;
+			}
+			else if (player1[i] == 'S')
+			{
+				if (player2[i] == 'R')
+					p2++;
+				else
+					p1++;
+			}
+			else
+			{
+				if (player2[i] == 'R')
+					p1++;
+				else
+					p2++;
+			}
+		}
+		cout << "P1: " << p1 << "\nP2: " << p2 << "\n";
+		cin >> player1 >> player2;
+	}
+}

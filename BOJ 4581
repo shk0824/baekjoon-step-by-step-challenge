@@ -1,0 +1,46 @@
+#include <iostream>
+#include <queue>
+#include <stack>
+#include <algorithm>
+#include <map>
+#include <string>
+#include <math.h>
+#include <unordered_map>
+using namespace std;
+
+int main()
+{
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+	string s;
+	cin >> s;
+	while (s != "#")
+	{
+		int absent = 0;
+		int yes = 0;
+		int no = 0;
+		bool quorum = false;
+
+		for (int i = 0; i < s.size(); i++)
+		{
+			if (s[i] == 'Y')
+				yes++;
+			else if (s[i] == 'N')
+				no++;
+			else if (s[i] == 'A')
+				absent++;
+		}
+
+		if (round(s.size() / 2.0) <= absent)
+			cout << "need quorum";
+		else if (yes > no)
+			cout << "yes";
+		else if (no > yes)
+			cout << "no";
+		else
+			cout << "tie";
+		cout << "\n";
+		cin >> s;
+	}
+
+}

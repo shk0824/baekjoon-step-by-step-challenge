@@ -1,0 +1,11 @@
+N = A = int(input())
+count = 0
+while True:
+    a = N//10
+    b = N%10
+    c = a + b
+    count += 1
+    N = int(str(N%10)+ str(c%10))
+    if (A == N):
+        break
+print(count)

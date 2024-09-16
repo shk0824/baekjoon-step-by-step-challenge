@@ -1,0 +1,14 @@
+word = input().upper()
+
+unique_word = list(set(word))
+sum = []
+
+for k in unique_word:
+    num = word.count(k)
+    sum.append(num)
+
+if sum.count(max(sum)) != 1:
+    print('?')
+else:
+    max_word = sum.index(max(sum))
+    print(unique_word[max_word])
